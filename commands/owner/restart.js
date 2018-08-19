@@ -1,0 +1,26 @@
+const commando = require('discord.js-commando');
+const fs = require('fs');
+
+module.exports = class RestartCommand extends commando.Command {
+	constructor(client) {
+		super(client, {
+			name: 'restart',
+			group: 'owner',
+			memberName: 'restart',
+			description: 'Restart this shard.',
+			aliases: ['r'],
+		});
+	}
+
+	async run(msg) {
+		process.send({
+			type: 'shardrestart',
+			channel: msg.channel.id,
+		})
+        console.warn(`Restarting shard ${this.client.shard.id}...`)
+		setTimeout(() => {
+            process.exit(55);
+        }, 500);
+		return msg.say('Restarting shard...');
+	}
+};
