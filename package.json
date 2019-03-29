@@ -6,7 +6,9 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "eslint": "^5.3.0"
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "ytdl-core": "^0.24.0"
   },
   "dependencies": {
     "bufferutil": "^4.0.0",
@@ -14,8 +16,11 @@
     "discord.js-commando": "../Commando",
     "erlpack": "discordapp/erlpack",
     "libsodium-wrappers": "^0.7.3",
-    "node-opus": "^0.3.0",
+    "mysql2": "^1.6.4",
+    "node-opus": "^0.3.1",
     "pg": "^7.4.3",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
     "sequelize": "^4.38.0",
     "sqlite": "^2.9.2"
   }

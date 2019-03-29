@@ -11,11 +11,6 @@ module.exports = class MsgCommand extends commando.Command {
             aliases: ['m'],
             args: [
 				{
-					key: 'guild',
-					prompt: 'Which guild yo',
-					type: 'string',
-				},
-				{
 					key: 'channel',
 					prompt: 'channel id pls',
 					type: 'string',
@@ -28,11 +23,14 @@ module.exports = class MsgCommand extends commando.Command {
 		});
 	}
 
+	hasPermission(msg) {
+		return (this.client.isOwner(msg.author));
+	}
+
 	async run(msg, args) {
 		const message = new GatewayCommand({
 			name: 'sendMessage', 
 			payload: {
-				guild: args.guild,
 				channel: args.channel,
 				message: args.message
 			}, 

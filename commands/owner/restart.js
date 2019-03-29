@@ -8,8 +8,12 @@ module.exports = class RestartCommand extends commando.Command {
 			group: 'owner',
 			memberName: 'restart',
 			description: 'Restart this shard.',
-			aliases: ['r'],
+			aliases: ['re'],
 		});
+	}
+
+	hasPermission(msg) {
+		return (this.client.isOwner(msg.author));
 	}
 
 	async run(msg) {

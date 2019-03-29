@@ -12,6 +12,10 @@ module.exports = class SuperRestartCommand extends commando.Command {
 		});
 	}
 
+	hasPermission(msg) {
+		return (this.client.isOwner(msg.author));
+	}
+
 	async run(msg) {
 		setTimeout(() => {
             process.send({

@@ -24,7 +24,7 @@ module.exports = class CrAddCommand extends commando.Command {
 
 	async run(msg, {trigger, response}) {
 		this.client.models.cr.create(msg.guild.id, trigger, response).then((result) => {
-			return msg.say('Success!' + result);
+			return msg.say('Sure, I\'ll say ' + response + ' in response to ' + trigger + '.');
 		}).catch((e) => {
 			return msg.say('noooo' +  e);
 		});

@@ -4,13 +4,14 @@ const config = require('./config.json');
 const fs = require('fs');
 const Database = require('./database.js');
 const Gateway = require('./Gateway.js')
+const crlistener = require('./crlistener.js')
 Database.start();
 
 const token = config.discord.token;
 
 const client = new Commando.CommandoClient({
 	owner: config.discord.owners,
-	commandPrefix: ',',
+	commandPrefix: '!',
 	unknownCommandResponse: false,
 });
 
@@ -20,6 +21,9 @@ client.registry
 		['cr', 'Custom reactions'],
 		['owner', 'Owner commands'],
 		['info', 'info commands'],
+		['fun', 'fun commands'],
+		['music', 'mmmmmm commands'],
+		['plant', 'plant commands'],
 	])
 	.registerDefaults()
 	.registerCommandsIn(path.join(__dirname, 'commands'));
@@ -32,9 +36,18 @@ fs.readdir(path.join(__dirname, 'models'), (err, files) => {
 	});
 });
 
+client.utils = {};
+fs.readdir(path.join(__dirname, 'utils'), (err, files) => {
+	if (err) return console.error(err);
+	files.forEach((filename) => {
+		client.utils[filename.slice(0, -3)] = require(path.join(__dirname, 'utils', filename));
+	});
+});
+
 client.gateway = new Gateway(client);
 
 client.on('ready', () => {
+	client.on('message', crlistener)
 	// console.log('{green}I am alive!');
 });
 

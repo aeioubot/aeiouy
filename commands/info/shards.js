@@ -8,7 +8,7 @@ module.exports = class ShardsCommand extends commando.Command {
 			group: 'info',
 			memberName: 'shards',
 			description: 'View shards info.',
-			aliases: ['shard', 's'],
+			aliases: ['shard', 'sh'],
 		});
 	}
 
