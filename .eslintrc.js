@@ -3,7 +3,7 @@ module.exports = {
         "es6": true,
         "node": true
     },
-    "extends": ["eslint:recommended", "eslint-config-airbnb-base"],
+    "extends": ["eslint:recommended", "eslint-config-google"],
     "rules": {
         "indent": ["error", "tab"],
         "quotes": ["error", "single"],
@@ -15,6 +15,7 @@ module.exports = {
         "prefer-destructuring": "off",
         "no-param-reassign": "off",
         "prefer-template": "off",
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "consistent-return": "off"
     }
 };

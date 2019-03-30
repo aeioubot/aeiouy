@@ -1,9 +1,2 @@
 node_modules/
-yarn-error.log
 config.json
-dectalk.dll
-dtalk_us.dic
-ffmpeg.exe
-say.exe
-MSVCRTd.dll
-tts-*.wav

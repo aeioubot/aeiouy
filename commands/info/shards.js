@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const GatewayCommand = require('../../GatewayCommand.js');
+const GatewayCommand = require('../../utils/gateway/GatewayCommand');
 
 module.exports = class ShardsCommand extends commando.Command {
 	constructor(client) {

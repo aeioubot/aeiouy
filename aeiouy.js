@@ -1,7 +1,7 @@
 const Commando = require('discord.js-commando');
 const path = require('path');
-const config = require('./config.json');
 const fs = require('fs');
+const config = require('./config.json');
 const Database = require('./database.js');
 const Gateway = require('./utils/gateway/Gateway.js');
 const crlistener = require('./crlistener.js');
@@ -10,13 +10,13 @@ Database.start();
 
 const token = config.discord.token;
 
-const client = new Commando.CommandoClient({
+const Aeiouy = new Commando.CommandoClient({
 	owner: config.discord.owners,
 	commandPrefix: '!',
 	unknownCommandResponse: false,
 });
 
-client.registry
+Aeiouy.registry
 	.registerGroups([
 		['mod', 'Commands for moderation'],
 		['cr', 'Custom reactions'],
@@ -29,36 +29,36 @@ client.registry
 	.registerDefaults()
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
-client.models = {}; // ?
+Aeiouy.models = {};
 fs.readdir(path.join(__dirname, 'models'), (err, files) => {
 	if (err) return console.error(err);
 	files.forEach((filename) => {
-		client.models[filename.slice(0, -3)] = require(path.join(__dirname, 'models', filename));
+		Aeiouy.models[filename.slice(0, -3)] = require(path.join(__dirname, 'models', filename));
 	});
 });
 
-client.gateway = new Gateway(client);
+Aeiouy.gateway = new Gateway(Aeiouy);
 
-client.on('ready', () => {
-	client.on('message', crlistener);
-	// console.log('{green}I am alive!');
+Aeiouy.on('ready', () => {
+	console.log('Ready to go!');
+	Aeiouy.on('message', crlistener);
 });
 
 process.on('message', (m) => {
 	if (m.gateway) {
-		client.gateway.runCommand(m);
+		Aeiouy.gateway.runCommand(m);
 	} else if (typeof m === 'object' && m.type && m.type === 'shardrestart') {
-		client.channels.get(m.channel).send('Restarted this shard!');
+		Aeiouy.channels.get(m.channel).send('Restarted this shard!');
 	}
 });
 
-client.on('error', (e) => {
+Aeiouy.on('error', (e) => {
 	if (e.message === 'read ECONNRESET') {
 		return console.error('{red}Connection error (ECONNRESET)');
 	}
-	console.error(e);
+	return console.error(e);
 });
 
-client.login(token);
+Aeiouy.login(token);
 
-require('./console.js')('shard ' + client.shard.id);
+require('./console.js')('shard ' + Aeiouy.shard.id);

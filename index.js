@@ -1,7 +1,7 @@
 require('./console.js')(' index ');
 
 const { fork } = require('child_process');
-const GatewayCommand = require('./GatewayCommand.js');
+const GatewayCommand = require('./utils/gateway/GatewayCommand');
 
 const run = (restart) => {
 	const child = fork('./shardmanager.js', [], {});
