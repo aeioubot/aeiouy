@@ -8,14 +8,12 @@
   "devDependencies": {
     "eslint": "^5.3.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "ytdl-core": "^0.24.0",
-    "discord.js": "../discord.js",
-    "discord.js-commando": "../Commando"
+    "ytdl-core": "^0.24.0"
   },
   "dependencies": {
     "bufferutil": "^4.0.0",
-    "discord.js": "aeioubot/discord.js#stable",
-    "discord.js-commando": "aeioubot/Commando#stable",
+    "discord.js": "discordjs/discord.js",
+    "discord.js-commando": "discordjs/Commando",
     "erlpack": "discordapp/erlpack",
     "libsodium-wrappers": "^0.7.3",
     "mysql2": "^1.6.4",
