@@ -20,11 +20,11 @@ module.exports = class RestartCommand extends commando.Command {
 		process.send({
 			type: 'shardrestart',
 			channel: msg.channel.id,
-		})
-        console.warn(`Restarting shard ${this.client.shard.id}...`)
+		});
+		console.warn(`Restarting shard ${this.client.shard.id}...`);
 		setTimeout(() => {
-            process.exit(55);
-        }, 500);
+			process.exit(55);
+		}, 500);
 		return msg.say('Restarting shard...');
 	}
 };

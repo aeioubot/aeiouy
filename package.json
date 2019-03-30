@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "bufferutil": "^4.0.0",
-    "discord.js": "discordjs/discord.js",
-    "discord.js-commando": "discordjs/Commando",
+    "discord.js": "https://github.com/discordjs/discord.js/",
+    "discord.js-commando": "https://github.com/discordjs/Commando",
     "erlpack": "discordapp/erlpack",
     "libsodium-wrappers": "^0.7.3",
     "mysql2": "^1.6.4",

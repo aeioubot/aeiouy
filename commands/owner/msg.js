@@ -8,8 +8,8 @@ module.exports = class MsgCommand extends commando.Command {
 			group: 'owner',
 			memberName: 'msg',
 			description: 'msg',
-            aliases: ['m'],
-            args: [
+			aliases: ['m'],
+			args: [
 				{
 					key: 'channel',
 					prompt: 'channel id pls',
@@ -29,15 +29,15 @@ module.exports = class MsgCommand extends commando.Command {
 
 	async run(msg, args) {
 		const message = new GatewayCommand({
-			name: 'sendMessage', 
+			name: 'sendMessage',
 			payload: {
 				channel: args.channel,
-				message: args.message
-			}, 
-			targets: 'all'
+				message: args.message,
+			},
+			targets: 'all',
 		});
-        console.log(message);
-        this.client.gateway.sendCommand(message);
+		console.log(message);
+		this.client.gateway.sendCommand(message);
 		return msg.say('brbrbrbrbr...');
 	}
 };

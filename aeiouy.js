@@ -3,8 +3,9 @@ const path = require('path');
 const config = require('./config.json');
 const fs = require('fs');
 const Database = require('./database.js');
-const Gateway = require('./utils/gateway/Gateway.js')
-const crlistener = require('./crlistener.js')
+const Gateway = require('./utils/gateway/Gateway.js');
+const crlistener = require('./crlistener.js');
+
 Database.start();
 
 const token = config.discord.token;
@@ -39,15 +40,14 @@ fs.readdir(path.join(__dirname, 'models'), (err, files) => {
 client.gateway = new Gateway(client);
 
 client.on('ready', () => {
-	client.on('message', crlistener)
+	client.on('message', crlistener);
 	// console.log('{green}I am alive!');
 });
 
 process.on('message', (m) => {
 	if (m.gateway) {
 		client.gateway.runCommand(m);
-	}
-	else if (typeof m === 'object' && m.type && m.type === 'shardrestart') {
+	} else if (typeof m === 'object' && m.type && m.type === 'shardrestart') {
 		client.channels.get(m.channel).send('Restarted this shard!');
 	}
 });

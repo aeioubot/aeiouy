@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const config = require('./config.json');
 const fs = require('fs');
-const GatewayCommand = require('./GatewayCommand.js');
 
 require('./console.js')('manager');
 
@@ -24,14 +23,13 @@ shardingManager.on('launch', (shard) => {
 			const onLaunch = (s2) => {
 				const onReady = () => {
 					s2.send(restarts[shard.id]);
-					s2.off('ready', onReady)
-				}
+					s2.off('ready', onReady);
+				};
 				s2.on('ready', onReady);
 				shardingManager.off('launch', onLaunch);
-			}
-			shardingManager.on('launch', onLaunch)
-		}
-		else {
+			};
+			shardingManager.on('launch', onLaunch);
+		} else {
 			console.warn(`Shard {cyan}#${shard.id}{r} died! Restarting...`);
 		}
 	});
@@ -41,32 +39,30 @@ shardingManager.on('launch', (shard) => {
 		}
 		if (m.gateway) {
 			handleGatewayMessage(m);
-		}
-		else {
+		} else {
 			process.send(m);
 		}
-	})
+	});
 });
 
 process.on('message', (m) => {
-	if (m.gateway) handleGatewayMessage(m)
+	if (m.gateway) handleGatewayMessage(m);
 });
 
 function handleGatewayMessage(m) {
-		shardingManager.shards.forEach(found => {
-			if (m.targets.includes(found.id) || m.targets === 'all') {
-				if (!found.ready) {
-					const sendTheCommandThatIsPending = () => {
-						found.send(m);
-						found.off('ready', sendTheCommandThatIsPending);
-					}
-					found.on('ready', sendTheCommandThatIsPending);
-				}
-				else {
+	shardingManager.shards.forEach((found) => {
+		if (m.targets.includes(found.id) || m.targets === 'all') {
+			if (!found.ready) {
+				const sendTheCommandThatIsPending = () => {
 					found.send(m);
-				}
+					found.off('ready', sendTheCommandThatIsPending);
+				};
+				found.on('ready', sendTheCommandThatIsPending);
+			} else {
+				found.send(m);
 			}
-		});
+		}
+	});
 }
 
 shardingManager.spawn(shardingManager.totalShards, 500).catch((e) => { console.log(e); });

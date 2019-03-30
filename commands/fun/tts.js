@@ -28,14 +28,13 @@ module.exports = class TtsCommand extends commando.Command {
 					const dispatcher = conn.playFile(filename);
 					dispatcher.on('end', () => {
 						if (!conn.dispatcher) conn.channel.leave();
-						console.log('Filename:', filename)
+						console.log('Filename:', filename);
 						response.delete();
 						setTimeout(() => {
 							fs.unlink(filename, (err) => {
 								if (err) console.error('TTS file was not deleted!', err);
 							});
-						}, 1000)
-						
+						}, 1000);
 					});
 				});
 			});

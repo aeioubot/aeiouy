@@ -11,26 +11,20 @@ module.exports = class CrFind extends commando.Command {
 				{
 					key: 'query',
 					prompt: 'What do you want to search for?',
-                    type: 'string',
+					type: 'string',
 				},
 			],
 		});
 	}
 
-	async run(msg, {query}) {
+	async run(msg, { query }) {
 		this.client.models.cr.getAll(msg.guild.id).then((result) => {
-            result = result.map(cr => cr.dataValues);
-            result = result.filter(cr => {
-                return cr.trigger.includes(query) || cr.response.includes(query);
-            });
-            result = result.map((cr, index) => {
-                return `${index + 1}. ${cr.trigger}
-    => ${cr.response}`
-            });
-            if (result.length > 0) return msg.say('Here are the search results:' + '```\n' + result.join('\n') + '```');
-            return msg.say('No custom reactions found.')
-		}).catch((e) => {
-			return msg.say('noooo' +  e);
-		});
+			result = result.map(cr => cr.dataValues);
+			result = result.filter(cr => cr.trigger.includes(query) || cr.response.includes(query));
+			result = result.map((cr, index) => `${index + 1}. ${cr.trigger}
+    => ${cr.response}`);
+			if (result.length > 0) return msg.say('Here are the search results:' + '```\n' + result.join('\n') + '```');
+			return msg.say('No custom reactions found.');
+		}).catch(e => msg.say('noooo' + e));
 	}
 };

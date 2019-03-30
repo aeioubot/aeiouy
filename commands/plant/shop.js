@@ -11,14 +11,10 @@ module.exports = class ShopCommand extends commando.Command {
 	}
 
 	async run(msg) {
-        this.client.models.shop.all().then((result) => {
-            result = result.map(x => x.dataValues);
-            result = result.map((item, index) => {
-                return ` - ${item.name}, costs :leaves: ${item.price}. Max ${item.max}.`
-            });
-            return msg.say('Shop:\n' + result.join('\n'));
-        }).catch((e) => {
-			return msg.say('noooo' +  e);
-		});
+		this.client.models.shop.all().then((result) => {
+			result = result.map(x => x.dataValues);
+			result = result.map((item, index) => ` - ${item.name}, costs :leaves: ${item.price}. Max ${item.max}.`);
+			return msg.say('Shop:\n' + result.join('\n'));
+		}).catch(e => msg.say('noooo' + e));
 	}
 };

@@ -10,16 +10,14 @@ module.exports = class StatusCommand extends commando.Command {
 		});
 	}
 
-	async run(msg, {trigger, response}) {
-		this.client.models.plant.find(msg.author.id, {planted: true}).then((result) => {
+	async run(msg, { trigger, response }) {
+		this.client.models.plant.find(msg.author.id, { planted: true }).then((result) => {
 			if (!result || result.length === 0) return msg.say('You don\'t have a plant!');
 			result = result[0].dataValues;
 			result = this.client.utils.growPlant(result);
 			let toSay = '';
 			toSay += 'Here is your current plant.';
 			msg.say(toSay, this.client.utils.generatePlantEmbed(result));
-		}).catch((e) => {
-			return msg.say('error: ' +  e);
-		});
+		}).catch(e => msg.say('error: ' + e));
 	}
 };
