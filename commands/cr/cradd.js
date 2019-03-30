@@ -19,8 +19,11 @@ module.exports = class CrAddCommand extends commando.Command {
 					type: 'string',
 				},
 			],
+			userPermissions: ['MANAGE_MESSAGES'],
 		});
 	}
+
+
 
 	async run(msg, {trigger, response}) {
 		this.client.models.cr.create(msg.guild.id, trigger, response).then((result) => {

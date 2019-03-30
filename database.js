@@ -12,10 +12,18 @@ class Database {
 	}
 
 	async start() {
-		await this.db.authenticate();
-		this.db.sync()
-			.then(() => console.log(`Connected to database!`))
-			.catch((err) => console.error(err));
+		await this.db.authenticate().then(() => {
+			this.db.sync()
+				.then(() => console.log(`Connected to database!`))
+				.catch((err) => {
+					console.error(err)
+				});
+		}).catch(e => {
+			if (e.name === 'SequelizeConnectionRefusedError') {
+				console.fatal('Database connection refused, is the database online?')
+			}
+		});
+		
 	}
 }
 

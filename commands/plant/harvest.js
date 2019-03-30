@@ -15,7 +15,7 @@ module.exports = class HarvestCommand extends commando.Command {
             result = result[0].dataValues;
 			result = this.client.utils.growPlant(result);
             this.client.models.plant.delete(result.id);
-            let leaves = result.progress / 4 * (0.5 + 0.5 * Math.random())
+            let leaves = Math.floor(result.progress / 4 * (0.5 + 0.5 * Math.random()))
             this.client.models.user.find(msg.author.id).then((user) => {
                 if (!user) {
                     this.client.models.user.upsert(msg.author.id, leaves);

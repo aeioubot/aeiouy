@@ -18,10 +18,19 @@ const run = (restart) => {
 	}
 
 	child.on('message', (m) => {
-		if (typeof m === 'object' && m.type === 'managerrestart') {
-			console.warn('Restarting all shards!');
-			child.kill();
-			run(m);
+		if (typeof m === 'object' && m.type) {
+			switch(m.type) {
+				case 'managerrestart':
+				console.warn('Restarting all shards!');
+				child.kill();
+				run(m);
+				break;
+				case 'managerkill':
+				console.fatal('Goodbye...');
+				child.kill();
+				process.exit(0);
+				break;
+			}
 		}
 	});
 };

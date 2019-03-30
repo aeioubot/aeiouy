@@ -20,6 +20,7 @@ module.exports = class CrDelCommand extends commando.Command {
                     default: false
 				},
 			],
+			userPermissions: ['MANAGE_MESSAGES'],
 		});
 	}
 
