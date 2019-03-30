@@ -7,12 +7,10 @@ class Gateway {
         this.client = client;
         this.pending = {};
         this.commands = {};
-        fs.readdir(path.join(__dirname, 'gatewayCommands'), (err, files) => {
-            if (err) return console.error(err);
-            files.forEach((filename) => {
-                this.commands[filename.slice(0, -3)] = require(path.join(__dirname, 'gatewayCommands', filename));
-            });
-        });
+        this.commands = require('require-all')({
+			dirname: __dirname + "/gatewayCommands",
+			filter: (n) => n.slice(0, -3),
+		});
     }
     
     sendCommand(command) {

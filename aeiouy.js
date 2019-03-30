@@ -3,7 +3,7 @@ const path = require('path');
 const config = require('./config.json');
 const fs = require('fs');
 const Database = require('./database.js');
-const Gateway = require('./Gateway.js')
+const Gateway = require('./utils/gateway/Gateway.js')
 const crlistener = require('./crlistener.js')
 Database.start();
 
@@ -28,19 +28,11 @@ client.registry
 	.registerDefaults()
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
-client.models = {};
+client.models = {}; // ?
 fs.readdir(path.join(__dirname, 'models'), (err, files) => {
 	if (err) return console.error(err);
 	files.forEach((filename) => {
 		client.models[filename.slice(0, -3)] = require(path.join(__dirname, 'models', filename));
-	});
-});
-
-client.utils = {};
-fs.readdir(path.join(__dirname, 'utils'), (err, files) => {
-	if (err) return console.error(err);
-	files.forEach((filename) => {
-		client.utils[filename.slice(0, -3)] = require(path.join(__dirname, 'utils', filename));
 	});
 });
 

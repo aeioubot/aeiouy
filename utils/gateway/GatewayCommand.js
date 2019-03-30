@@ -1,10 +1,9 @@
 class GatewayCommand {
-    constructor({name, payload, targets, time = new Date().getTime().toString(), source}) {
-        this.gateway = true;
+    constructor({name, payload, targets, source}) {
         this.name = name;
         this.payload = payload;
         this.targets = targets;
-        this.time = time;
+        this.time = time = new Date().getTime().toString();
         this.source = source;
     }
 }
