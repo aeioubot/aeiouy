@@ -65,4 +65,6 @@ function handleGatewayMessage(m) {
 	});
 }
 
-shardingManager.spawn(shardingManager.totalShards, 500).catch((e) => { console.log(e); });
+shardingManager.spawn(shardingManager.totalShards, 500).catch((e) => {
+	console.log(e);
+});

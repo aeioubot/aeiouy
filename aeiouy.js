@@ -45,11 +45,7 @@ Aeiouy.on('ready', () => {
 });
 
 process.on('message', (m) => {
-	if (m.gateway) {
-		Aeiouy.gateway.runCommand(m);
-	} else if (typeof m === 'object' && m.type && m.type === 'shardrestart') {
-		Aeiouy.channels.get(m.channel).send('Restarted this shard!');
-	}
+	Aeiouy.gateway.runCommand(m);
 });
 
 Aeiouy.on('error', (e) => {

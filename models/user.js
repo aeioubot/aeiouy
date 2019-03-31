@@ -15,7 +15,7 @@ const table = db.define('user', {
 });
 
 module.exports = {
-	find: user => table.findOne({
+	find: (user) => table.findOne({
 		where: {
 			user,
 		},

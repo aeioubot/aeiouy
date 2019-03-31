@@ -14,8 +14,10 @@ module.exports = class ShardsCommand extends commando.Command {
 
 	async run(msg) {
 		this.client.gateway.sendCommand(new GatewayCommand({
+			client: this.client,
 			name: 'shardinfo',
-			targets: 'all',
+			payload: {},
+			targets: [],
 		})).then((data) => {
 			data = data.sort((a, b) => a.source - b.source);
 			const s = '     ';
@@ -36,6 +38,5 @@ module.exports = class ShardsCommand extends commando.Command {
 			response += '\n# Total' + s + totals.guilds.toString().padStart(6, ' ') + s + totals.channels.toString().padStart(8, ' ') + s + totals.members.toString().padStart(7, ' ');
 			msg.say(response + '```');
 		});
-		return msg.say('working...');
 	}
 };

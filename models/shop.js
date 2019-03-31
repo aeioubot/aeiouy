@@ -26,7 +26,7 @@ module.exports = {
 		where: query,
 	}),
 
-	findByName: name => table.findAll({
+	findByName: (name) => table.findAll({
 		where: {
 			name: {
 				[Op.like]: '%' + name + '%',

@@ -1,4 +1,4 @@
-module.exports = function (name) {
+module.exports = function(name) {
 	const colours = {
 		black: '\x1b[30m',
 		red: '\x1b[31m',

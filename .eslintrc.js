@@ -3,6 +3,10 @@ module.exports = {
         "es6": true,
         "node": true
     },
+    "parserOptions": {
+        "ecmaVersion": 9,
+        "sourceType": "module"
+    },
     "extends": ["eslint:recommended", "eslint-config-google"],
     "rules": {
         "indent": ["error", "tab"],
@@ -16,6 +20,10 @@ module.exports = {
         "no-param-reassign": "off",
         "prefer-template": "off",
         "class-methods-use-this": "off",
-        "consistent-return": "off"
+        "consistent-return": "off",
+        "require-jsdoc": "off",
+        "arrow-parens": "off",
+        "guard-for-in": "off",
+        "object-curly-spacing": "off"
     }
 };

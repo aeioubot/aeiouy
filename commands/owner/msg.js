@@ -23,18 +23,19 @@ module.exports = class MsgCommand extends commando.Command {
 		});
 	}
 
-	hasPermission(msg) {
+	async hasPermission(msg) {
 		return (this.client.isOwner(msg.author));
 	}
 
 	async run(msg, args) {
 		const message = new GatewayCommand({
+			client: this.client,
 			name: 'sendMessage',
 			payload: {
 				channel: args.channel,
 				message: args.message,
 			},
-			targets: 'all',
+			targets: [],
 		});
 		console.log(message);
 		this.client.gateway.sendCommand(message);

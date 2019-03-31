@@ -1,6 +1,4 @@
 const GatewayCommand = require('./GatewayCommand.js');
-const fs = require('fs');
-const path = require('path');
 
 class Gateway {
 	constructor(client) {
@@ -14,14 +12,13 @@ class Gateway {
 	}
 
 	sendCommand(command) {
-		if (!(command instanceof GatewayCommand)) return 'Command must be a GatewayCommand.';
-		command.source = this.client.shard.id;
+		if (!(command instanceof GatewayCommand)) throw new Error('Command must be a GatewayCommand.');
 		return new Promise((resolve, reject) => {
 			this.pending[command.time] = {
 				responses: [],
 				resolve,
 				reject,
-				totalTargets: command.targets === 'all' ? this.client.shard.count : command.targets.length,
+				totalTargets: (!command.targets || command.targets.length == 0) ? this.client.shard.count : command.targets.length,
 			};
 			process.send(command);
 		});
@@ -40,18 +37,18 @@ class Gateway {
 		}
 		return this.commands[command.name](this.client, command.payload).then((output) => {
 			process.send(new GatewayCommand({
+				client: this.client,
 				name: 'response',
 				payload: output,
 				targets: [command.source],
-				source: this.client.shard.id,
 				time: command.time,
 			}));
 		}).catch((e) => {
 			process.send(new GatewayCommand({
+				client: this.client,
 				name: 'response',
 				payload: null,
 				targets: [command.source],
-				source: this.client.shard.id,
 				time: command.time,
 			}));
 		});

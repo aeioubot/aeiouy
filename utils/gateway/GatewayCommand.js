@@ -1,12 +1,11 @@
 class GatewayCommand {
-	constructor({
-		name, payload, targets, source,
-	}) {
+	constructor({client, name, payload, targets, time}) {
 		this.name = name;
 		this.payload = payload;
 		this.targets = targets;
-		this.time = time = new Date().getTime().toString();
-		this.source = source;
+		this.time = time || new Date().getTime().toString();
+		this.source = client.shard.id;
+		this.totalDestinations = !targets || targets.length === 0 ? client.shard.count : targets.length;
 	}
 }
 

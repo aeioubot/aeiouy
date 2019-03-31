@@ -18,7 +18,7 @@ const table = db.define('customreaction', {
 });
 
 module.exports = {
-	create: (guild, trigger, response) => table.upsert({ guild, trigger, response }, {
+	create: (guild, trigger, response) => table.upsert({guild, trigger, response}, {
 		where: {
 			guild,
 			trigger,
@@ -34,7 +34,7 @@ module.exports = {
 			where,
 		});
 	},
-	getAll: guild => table.findAll({
+	getAll: (guild) => table.findAll({
 		where: {
 			guild,
 		},
@@ -49,7 +49,7 @@ module.exports = {
 			where,
 		});
 	},
-	deleteById: id => table.destroy({
+	deleteById: (id) => table.destroy({
 		where: {
 			id,
 		},
