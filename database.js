@@ -6,7 +6,6 @@ class Database {
 		this.db = new Sequelize(config.db.name, config.db.username, config.db.password, {
 			host: config.db.host,
 			dialect: config.db.dialect,
-			//operatorsAliases: false,
 			logging: false,
 		});
 	}
