@@ -13,7 +13,6 @@ const token = config.discord.token;
 const Aeiouy = new Commando.CommandoClient({
 	owner: config.discord.owners,
 	commandPrefix: '!',
-	unknownCommandResponse: false,
 });
 
 Aeiouy.registry
@@ -25,8 +24,13 @@ Aeiouy.registry
 		['fun', 'fun commands'],
 		['music', 'mmmmmm commands'],
 		['plant', 'plant commands'],
+		['util', 'u t i l i t y'],
 	])
-	.registerDefaults()
+	.registerDefaultTypes()
+    .registerDefaultGroups()
+    .registerDefaultCommands({
+		unknownCommand: false,
+	})
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
 Aeiouy.models = {};

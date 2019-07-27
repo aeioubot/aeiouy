@@ -15,10 +15,14 @@ const table = db.define('customreaction', {
 	response: {
 		type: Sequelize.STRING(2000),
 	},
+
+	type: {
+		type: Sequelize.STRING(20),
+	},
 });
 
 module.exports = {
-	create: (guild, trigger, response) => table.upsert({guild, trigger, response}, {
+	create: (guild, trigger, response) => table.upsert({guild, trigger, response, type: "whole"}, {
 		where: {
 			guild,
 			trigger,
