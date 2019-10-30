@@ -35,6 +35,7 @@ class Gateway {
 			})));
 			return delete this.pending[command.time];
 		}
+		if (!this.commands[command.name]) return;
 		return this.commands[command.name](this.client, command.payload).then((output) => {
 			process.send(new GatewayCommand({
 				client: this.client,

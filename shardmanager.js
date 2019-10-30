@@ -34,8 +34,9 @@ shardingManager.on('launch', (shard) => {
 		}
 	});
 	shard.on('message', (m) => {
+		//console.log('SHARD:MESSAGE', m);
 		if (m.type && m.type === 'shardrestart') {
-			restarts[shard.id] = m;
+			restarts[shard.id] = {name: m.type, payload: {channel: m.channel}};
 		}
 		if (m.gateway) {
 			handleGatewayMessage(m);
@@ -46,12 +47,13 @@ shardingManager.on('launch', (shard) => {
 });
 
 process.on('message', (m) => {
+	//console.log('PROCESS:MESSAGE', m);
 	if (m.gateway) handleGatewayMessage(m);
 });
 
 function handleGatewayMessage(m) {
 	shardingManager.shards.forEach((found) => {
-		if (m.targets.includes(found.id) || m.targets === 'all') {
+		if (m.targets.includes(found.id) || m.targets === 'all' || (typeof m.targets === 'object' && m.targets.length === 0)) {
 			if (!found.ready) {
 				const sendTheCommandThatIsPending = () => {
 					found.send(m);

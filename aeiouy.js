@@ -13,6 +13,7 @@ const token = config.discord.token;
 const Aeiouy = new Commando.CommandoClient({
 	owner: config.discord.owners,
 	commandPrefix: '!',
+	invite: config.discord.invite,
 });
 
 Aeiouy.registry
@@ -40,6 +41,12 @@ fs.readdir(path.join(__dirname, 'models'), (err, files) => {
 		Aeiouy.models[filename.slice(0, -3)] = require(path.join(__dirname, 'models', filename));
 	});
 });
+
+Aeiouy.utils = require('require-all')({
+	dirname     :  __dirname + '/utils',
+	excludeDirs :  /^(gateway)$/,
+	recursive   : true
+  });
 
 Aeiouy.gateway = new Gateway(Aeiouy);
 

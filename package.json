@@ -12,8 +12,9 @@
   },
   "dependencies": {
     "bufferutil": "^4.0.0",
-    "discord.js": "https://github.com/discordjs/discord.js/",
-    "discord.js-commando": "https://github.com/discordjs/Commando",
+    "canvas": "^2.6.0",
+    "discord.js": "^11.5.1",
+    "discord.js-commando": "^0.10.0",
     "erlpack": "discordapp/erlpack",
     "eslint-plugin-import": "^2.16.0",
     "libsodium-wrappers": "^0.7.3",
@@ -22,6 +23,7 @@
     "pg": "^7.4.3",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
+    "require-all": "^3.0.0",
     "sequelize": "^6.0.0",
     "sqlite": "^2.9.2"
   }
