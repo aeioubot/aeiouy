@@ -14,6 +14,7 @@ const Aeiouy = new Commando.CommandoClient({
 	owner: config.discord.owners,
 	commandPrefix: '!',
 	invite: config.discord.invite,
+	unknownCommandResponse: false,
 });
 
 Aeiouy.registry
