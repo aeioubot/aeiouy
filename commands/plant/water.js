@@ -17,7 +17,7 @@ module.exports = class WaterCommand extends commando.Command {
 	}
 
 	async run(msg, { user }) {
-		this.client.models.plant.find(user ? user.id : msg.author.id, { planted: true }).then((result) => {
+		this.client.models.plant.find({ user: user ? user.id : msg.author.id, planted: true }).then((result) => {
 			if (!result || result.length === 0) return user ? msg.say('This user doesn\'t have a plant!') : msg.say('You don\'t have a plant!');
 			result = result[0].dataValues;
 			this.client.models.plant.water(result.id);

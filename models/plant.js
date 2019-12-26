@@ -8,21 +8,29 @@ const table = db.define('seed', {
 		type: Sequelize.STRING(25),
 	},
 
+	server: {
+		type: Sequelize.STRING(25),
+	},
+
+	type: {
+		type: Sequelize.STRING(50),
+	},
+
 	colour: {
 		type: Sequelize.STRING(6),
 	},
 
-	growthRate: {
-		type: Sequelize.INTEGER,
-	},
+	// growthRate: {
+	// 	type: Sequelize.INTEGER,
+	// },
 
-	waterAffinity: {
-		type: Sequelize.INTEGER,
-	},
+	// waterAffinity: {
+	// 	type: Sequelize.INTEGER,
+	// },
 
-	leafiness: {
-		type: Sequelize.INTEGER,
-	},
+	// leafiness: {
+	// 	type: Sequelize.INTEGER,
+	// },
 
 	watered: {
 		type: Sequelize.BOOLEAN,
@@ -49,30 +57,36 @@ const table = db.define('seed', {
 	},
 });
 
+table.sync();
+
 module.exports = {
-	create: (user, colour, growthRate, waterAffinity, leafiness, name) => table.upsert({
+	types: require('../config_planttypes.js'),
+
+	create: (user, server, type, colour, growthRate, waterAffinity, leafiness, name) => table.upsert({
 		user,
+		server,
+		type,
 		colour,
-		growthRate,
-		waterAffinity,
-		leafiness,
+		// growthRate,
+		// waterAffinity,
+		// leafiness,
 		watered: false,
 		planted: false,
 		name,
 		lastEvent: 'Found this seed',
 	}),
 
-	find: (user, extra = {}) => table.findAll({
+	find: (extra = {}) => table.findAll({
 		where: {
-			user,
 			...extra,
 		},
 	}),
 
-	plant: seed => table.update({
+	plant: (seed, server) => table.update({
 		planted: true,
 		progress: 0,
 		progressedAt: new Date(),
+		server: server,
 	}, {
 		where: {
 			id: seed,

@@ -12,7 +12,7 @@ module.exports = class PouchCommand extends commando.Command {
 	}
 
 	async run(msg) {
-		this.client.models.plant.find(msg.author.id, { planted: false }).then((result) => {
+		this.client.models.plant.find({ user: msg.author.id, planted: false }).then((result) => {
 			if (result.length === 0) {
 				return msg.say('You don\'t have any seeds!');
 			}

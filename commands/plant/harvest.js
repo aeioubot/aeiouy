@@ -11,7 +11,7 @@ module.exports = class HarvestCommand extends commando.Command {
 	}
 
 	async run(msg) {
-		this.client.models.plant.find(msg.author.id, { planted: true }).then((result) => {
+		this.client.models.plant.find({ user: msg.author.id, planted: true }).then((result) => {
 			if (!result || result.length === 0) return msg.say('You don\'t have a plant!');
 			result = result[0].dataValues;
 			result = this.client.utils.growPlant(result);
@@ -24,7 +24,9 @@ module.exports = class HarvestCommand extends commando.Command {
 					this.client.models.user.upsert(msg.author.id, user.dataValues.leaves + leaves);
 				}
 			});
-			msg.say('You\'ve harvested your plant and got :leaves:' + leaves, this.client.utils.generatePlantEmbed(result));
+			this.client.utils.generatePlantEmbed(result, this.client).then(embed => {
+				msg.say('You\'ve harvested your plant and got :leaves:' + leaves, embed);
+			});
 		}).catch(e => msg.say('error: ' + e));
 	}
 };

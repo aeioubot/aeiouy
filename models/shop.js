@@ -8,6 +8,10 @@ const table = db.define('shopitem', {
 		type: Sequelize.STRING,
 	},
 
+	description: {
+		type: Sequelize.STRING,
+	},
+
 	price: {
 		type: Sequelize.INTEGER,
 	},

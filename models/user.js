@@ -12,6 +12,10 @@ const table = db.define('user', {
 	leaves: {
 		type: Sequelize.INTEGER,
 	},
+
+	home: {
+		type: Sequelize.STRING(25)
+	}
 });
 
 module.exports = {

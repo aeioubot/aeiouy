@@ -10,6 +10,7 @@
         "token": "discord bots token",
         "shards": 2,
         "owners": ["discord ID", "discord ID"],
-        "invite": "https://discord.gg/supportserver"
+        "invite": "https://discord.gg/supportserver",
+        "prefix": "!"
     }
 }
