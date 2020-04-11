@@ -53,6 +53,9 @@ Aeiouy.gateway = new Gateway(Aeiouy);
 
 Aeiouy.on('ready', () => {
 	console.log('Ready to go!');
+});
+
+Aeiouy.once('ready', () => {
 	Aeiouy.on('message', crlistener);
 });
 
