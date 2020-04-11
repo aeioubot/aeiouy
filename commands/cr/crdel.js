@@ -25,19 +25,24 @@ module.exports = class CrDelCommand extends commando.Command {
 	}
 
 	async run(msg, { trigger, response }) {
-		this.client.models.cr.find(msg.guild.id, trigger, response).then((result) => {
+		const findObj = {
+			guild: msg.guild.id,
+			trigger: trigger,
+		};
+		if (response) findObj.response = response;
+		this.client.mods.reaction.findAll({ where: findObj }).then((result) => {
 			if (result.length === 0) return msg.say('I couldn\'t find that custom reaction');
 			if (result.length === 1) {
-				this.client.models.cr.deleteByTrigger(msg.guild.id, trigger, response);
+				this.client.mods.reaction.destroy({where: findObj});
 				return msg.say('I\'ve deleted it.');
 			}
-			result = result.map(cr => cr.dataValues);
+			result = result.map(cr => cr);
 			if (response === false) {
 				result = result.map((cr, index) => `${index + 1}. ${cr.trigger}
         => ${cr.response}`);
 				return msg.say('Multiple reactions found. Please specify the response as well. ```\n' + result.join('\n') + '```');
 			}
-			this.client.models.cr.deleteById(result[0].id);
+			this.client.mods.reaction.destroy({where: {id: result[0].id}});
 			return msg.say('There were multiple reactions with this trigger & response; I\'ve deleted one of them.');
 		}).catch(e => msg.say('noooo' + e));
 	}

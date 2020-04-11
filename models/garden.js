@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const db = require('../database.js').db;
 
-const gardenTable = db.define('garden', {
+const gardenTable = db.define('2garden', {
 	server: {
 		type: Sequelize.STRING(25),
 	},

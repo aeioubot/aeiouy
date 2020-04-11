@@ -18,8 +18,8 @@ module.exports = class CrFind extends commando.Command {
 	}
 
 	async run(msg, { query }) {
-		this.client.models.cr.getAll(msg.guild.id).then((result) => {
-			result = result.map(cr => cr.dataValues);
+		this.client.mods.reaction.findAll({where: {guild: msg.guild.id}}).then((result) => {
+			result = result.map(cr => cr);
 			result = result.filter(cr => cr.trigger.includes(query) || cr.response.includes(query));
 			result = result.map((cr, index) => `${index + 1}. ${cr.trigger}
     => ${cr.response}`);

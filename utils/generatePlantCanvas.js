@@ -40,7 +40,7 @@ module.exports = async (result, types) => {
         }
         //ctx.fillStyle = `hsl(${Math.floor(Math.random()*360)}, 100%, 50%)`;
 
-        let typeInfo = types[result[i].type];
+        let typeInfo = await result[i].getPlantType();
         let stage = Math.floor(result[i].progress / 100 * typeInfo.maxStage);
         const img = await Canvas.loadImage('./img/' + result[i].type + '_' + stage + '.png');
 
@@ -64,7 +64,7 @@ module.exports = async (result, types) => {
             // Replace white with the custom colour. Could move this to the config if white is desired as a plant colour
             let oldColor = [255, 255, 255];
             let oldColorComp = [0, 0, 0];
-            let newColor = result[i].colour.match(/[a-f\d]{2}/g).map(x => parseInt(x, 16))
+            let newColor = result[i].color.match(/[a-f\d]{2}/g).map(x => parseInt(x, 16))
             let newColorComp = newColor.map(x => x ^ 255)
 
             var imageData = ctx.getImageData(xdraw, ydraw, size, size);

@@ -38,8 +38,8 @@ module.exports = class CrList extends commando.Command {
 
 	async run(msg, { page, sort, order }) {
 		page--;
-		this.client.models.cr.getAll(msg.guild.id).then((result) => {
-			result = result.map(cr => cr.dataValues);
+		this.client.mods.reaction.findAll({where: {guild: msg.guild.id}}).then((result) => {
+			result = result.map(cr => cr);
 			switch (sort) {
 			case 'trigger':
 				result = result.sort((a, b) => {

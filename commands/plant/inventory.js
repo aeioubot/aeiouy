@@ -8,22 +8,62 @@ module.exports = class InventoryCommand extends commando.Command {
 			memberName: 'inventory',
 			description: 'view inventory',
 			aliases: ['inv'],
+			args: [{
+				type: 'string',
+				key: 'action',
+				default: 'list',
+				prompt: 'action',
+			}, {
+				type: 'string',
+				key: 'emoji',
+				default: '',
+				prompt: 'item',
+			}, {
+				type: 'string',
+				key: 'extra',
+				default: '',
+				prompt: 'what',
+			}]
 		});
 	}
 
-	async run(msg) {
-		this.client.models.inventory.find(msg.author.id).then((result) => {
-			if (result.length === 0) {
-				return msg.say('Your inventory is empty!');
-			}
-			result = result.map(x => x.dataValues);
-			this.client.models.shop.all().then((shopItems) => {
-				// array of available shop items
-				shopItems = shopItems.map(shopItem => shopItem.dataValues);
-				// go through all items in the inventory and write the name of the matched shop item
-				result = result.map((item, index) => `${index}. ${shopItems.filter(shopitem => shopitem.id === item.item)[0].name}`);
-				return msg.say('Items:\n' + result.join('\n'));
-			});
-		}).catch(e => msg.say('noooo' + e));
+	async run(msg, args) {
+		let client = this.client;
+		const {action, emoji} = args
+		this.client.mods.user.findOne({where: {id: msg.author.id}}).then(user => {
+			user.getItems().then(async inventory => {
+				switch(action) {
+					case 'use':
+						if (inventory.length == 0) return msg.say('You don\'t have any items to use.');
+
+						if (emoji == '') return msg.say('Please specify which item');
+
+						let itemType = await this.client.mods.itemType.findOne({where: {emoji: emoji}});
+
+						if (!itemType) return msg.say('That item does not exist.');
+
+						const inventoryItem = inventory.find(item => item.type == itemType.id);
+
+						if (!inventoryItem) return msg.say('You do not have this item')
+
+						inventoryItem.update({count: inventoryItem.count - 1});
+
+						if (inventoryItem.count == 0) inventoryItem.destroy();
+						require('../../items/' + itemType.type + '.js')({client, msg, args});
+
+						break;
+					default:
+						if (inventory.length === 0) {
+							return msg.say('You don\'t have any items!');
+						}
+						let output = 'Here\'s your inventory:\n';
+						for (let i = 0; i < inventory.length; i++) {
+							let typeInfo = await inventory[i].getItemType()
+							output += `${typeInfo.emoji} | ${typeInfo.name} (${inventory[i].count})\n`
+						}
+						msg.say(output);
+				}
+			})
+		})
 	}
 };

@@ -4,9 +4,11 @@ const fs = require('fs');
 const config = require('./config.json');
 const Database = require('./database.js');
 const Gateway = require('./utils/gateway/Gateway.js');
-const crlistener = require('./crlistener.js');
+const ReactionListener = require('./crlistener.js');
 
 Database.start();
+
+const mods = require('./models4')
 
 const token = config.discord.token;
 
@@ -16,6 +18,10 @@ const Aeiouy = new Commando.CommandoClient({
 	invite: config.discord.invite,
 	unknownCommandResponse: false,
 });
+
+Aeiouy.mods = mods;
+
+let reactionListener = new ReactionListener(mods.reaction, 'jeff');
 
 Aeiouy.registry
 	.registerGroups([
@@ -58,7 +64,7 @@ Aeiouy.gateway = new Gateway(Aeiouy);
 
 Aeiouy.on('ready', () => {
 	console.log('Ready to go!');
-	Aeiouy.on('message', crlistener);
+	//Aeiouy.on('message', (msg) => {reactionListener.check(msg)});
 });
 
 process.on('message', (m) => {

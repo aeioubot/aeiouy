@@ -8,7 +8,14 @@ class Database {
 			dialect: config.db.dialect,
 			logging: false,
 		});
+
+		this.models = {};
 	}
+
+	setModels(models) {
+		this.models = models;
+	}
+
 
 	async start() {
 		await this.db.authenticate().then(() => {
