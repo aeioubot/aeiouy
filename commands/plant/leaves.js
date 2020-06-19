@@ -1,3 +1,5 @@
+// This command is deprecated ... probably.
+
 const commando = require('discord.js-commando');
 
 module.exports = class LeavesCommand extends commando.Command {

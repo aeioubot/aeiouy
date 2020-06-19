@@ -1,4 +1,6 @@
 module.exports = async (client, payload) => new Promise((resolve, reject) => {
-	if (!client.channels.get(payload.channel)) return reject('Not Found');
-	client.channels.get(payload.channel).send(payload.message).then(() => resolve());
+	client.channels.fetch(payload.channel).then(channel => {
+		if (!channel) return reject('Channel not found');
+		channel.send(payload.message).then(()=>resolve()).catch(()=>reject('Error sending message'))
+	});
 });

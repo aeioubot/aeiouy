@@ -8,7 +8,7 @@ const ReactionListener = require('./crlistener.js');
 
 Database.start();
 
-const mods = require('./models4')
+const mods = require('./models_new');
 
 const token = config.discord.token;
 
@@ -21,34 +21,6 @@ const Aeiouy = new Commando.CommandoClient({
 
 Aeiouy.mods = mods;
 
-let reactionListener = new ReactionListener(mods.reaction, 'jeff');
-
-Aeiouy.registry
-	.registerGroups([
-		['mod', 'Commands for moderation'],
-		['cr', 'Custom reactions'],
-		['owner', 'Owner commands'],
-		['info', 'info commands'],
-		['fun', 'fun commands'],
-		['music', 'mmmmmm commands'],
-		['plant', 'plant commands'],
-		['util', 'u t i l i t y'],
-	])
-	.registerDefaultTypes()
-    .registerDefaultGroups()
-    .registerDefaultCommands({
-		unknownCommand: false,
-	})
-	.registerCommandsIn(path.join(__dirname, 'commands'));
-/*
-Aeiouy.models = {};
-fs.readdir(path.join(__dirname, 'models'), (err, files) => {
-	if (err) return console.error(err);
-	files.forEach((filename) => {
-		Aeiouy.models[filename.slice(0, -3)] = require(path.join(__dirname, 'models', filename));
-	});
-});*/
-
 Aeiouy.models = require('require-all')({
 	dirname     :  __dirname + '/models',
 	recursive   : true
@@ -58,13 +30,36 @@ Aeiouy.utils = require('require-all')({
 	dirname     :  __dirname + '/utils',
 	excludeDirs :  /^(gateway)$/,
 	recursive   : true
-  });
+});
+
+let reactionListener = new ReactionListener(mods.reaction);
+
+Aeiouy.registry
+	.registerGroups([
+		['mod', 'Commands for moderation'],
+		['cr', 'Custom reactions'],
+		['owner', 'Developer commands'],
+		['info', 'info commands'],
+		['fun', 'fun commands'],
+		['plant', 'Plant game'],
+		['util', 'u t i l i t y'],
+	])
+	.registerDefaultTypes()
+    .registerDefaultGroups()
+    .registerDefaultCommands({
+		unknownCommand: false,
+	})
+	.registerCommandsIn(path.join(__dirname, 'commands'));
+
 
 Aeiouy.gateway = new Gateway(Aeiouy);
 
 Aeiouy.on('ready', () => {
 	console.log('Ready to go!');
-	//Aeiouy.on('message', (msg) => {reactionListener.check(msg)});
+});
+
+Aeiouy.once('ready', () => {
+	Aeiouy.on('message', (msg) => {reactionListener.check(msg)});
 });
 
 process.on('message', (m) => {
@@ -79,5 +74,4 @@ Aeiouy.on('error', (e) => {
 });
 
 Aeiouy.login(token);
-
-require('./console.js')('shard ' + Aeiouy.shard.id);
+require('./console.js')('shard ' + Aeiouy.shard.ids);

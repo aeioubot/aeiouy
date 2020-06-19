@@ -22,7 +22,7 @@ module.exports = (plants, {bonus = 0}, cb) => {
                 }
                 hoursPassed -= 1;
             }
-            plant.progress = Math.min(100, plant.progress) + bonus;
+            plant.progress = Math.min(100, plant.progress + bonus);
             plant.save();
             resolve(plant);
         })

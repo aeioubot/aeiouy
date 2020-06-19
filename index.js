@@ -1,7 +1,6 @@
 const {fork} = require('child_process');
 const GatewayCommand = require('./utils/gateway/GatewayCommand');
 
-
 const run = (restart) => {
 	const child = fork('./shardmanager.js', [], {});
 
@@ -21,12 +20,12 @@ const run = (restart) => {
 			switch (m.type) {
 			case 'managerrestart':
 				console.warn('Restarting all shards!');
-				child.kill();
+				child.kill('SIGINT');
 				run(m);
 				break;
 			case 'managerkill':
 				console.fatal('Goodbye...');
-				child.kill();
+				child.kill('SIGINT');
 				process.exit(0);
 				break;
 			}

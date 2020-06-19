@@ -19,12 +19,13 @@ module.exports = class TtsCommand extends commando.Command {
 	}
 
 	async run(msg, { text }) {
+		return msg.say('Sorry, this command is currently not available.');
 		const filename = `tts-${msg.id}.wav`;
-		if (!msg.member.voiceChannelID) return msg.say('join vc!');
+		if (!msg.member.voice.channelID) return msg.say('join vc!');
 		msg.say(':lips:').then((response) => {
 			execFile('say.exe', ['-w', filename, '[:phoneme on]' + text], (err) => {
 				if (err) throw err;
-				msg.guild.channels.get(msg.member.voiceChannelID).join().then((conn) => {
+				msg.guild.channels.get(msg.member.voice.channelID).join().then((conn) => {
 					const dispatcher = conn.playFile(filename);
 					dispatcher.on('end', () => {
 						if (!conn.dispatcher) conn.channel.leave();

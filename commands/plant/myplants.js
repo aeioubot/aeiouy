@@ -39,19 +39,16 @@ module.exports = class MyPlantsCommand extends commando.Command {
                                     return msg.say('here plant', embed)
                                 })
                             });
-                            
                         }
                         else {
-
                             this.client.utils.growPlants(plants, {}, async (grownPlants) => {
-
-                                const canvas = await this.client.utils.generatePlantCanvas(grownPlants, this.client.models.plant.types);
-                                const attachment = new Attachment(canvas.toBuffer(), 'own-plants.png');
-                                return msg.say('Here are your plants', attachment);
+                                const types = await this.client.mods.plantType.findAll();
+                                const canvas = await this.client.utils.generatePlantCanvas(grownPlants, types);
+                                return msg.say('Here are your plants', {files: [{
+                                    attachment: canvas.toBuffer(),
+                                    name: 'own-plants.png',
+                                }]});
                             });
-
-
-
                         }
                     }).catch(e => msg.say('error: ' + e));
                 })
@@ -69,27 +66,6 @@ module.exports = class MyPlantsCommand extends commando.Command {
                         })
                     }).catch(e => msg.say('error: ' + e));
                 })
-                /*
-                this.client.models.plant.find({ user: msg.author.id, planted: true }).then(async (plants) => {
-                    if (!plants[index]) return msg.say('Index not found');
-                    this.client.models.plant.water(plants[index].id);
-                    let result = this.client.utils.growPlant(plants[index]);
-                    result.watered = true;
-                    msg.say('watered', this.client.utils.generatePlantEmbed(result));
-                    /*
-                    const canvas = await this.client.utils.generatePlantCanvas(result, this.client.models.plant.types);
-                    const attachment = new Attachment(canvas.toBuffer(), 'welcome-image.png');
-        
-                    return msg.say('Here are your plants', attachment);
-                    result = result[0];
-                    result = this.client.utils.growPlant(result);
-                    let toSay = '';
-                    toSay += 'Here is your current plant.';
-                    this.client.utils.generatePlantEmbed(result, this.client).then(embed => {
-                        msg.say(toSay, embed);
-                    });
-                    return null;//*
-                }).catch(e => msg.say('error: ' + e));//*/
                 break;
         }
 

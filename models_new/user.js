@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(25),
             primaryKey: true,
         },
-        email: DataTypes.STRING
     });
 
     User.sync();

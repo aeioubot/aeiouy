@@ -32,7 +32,7 @@ module.exports = class CrAddCommand extends commando.Command {
 			response,
 		}).then(result => {
 			msg.say('Sure, I\'ll say ' + response + ' in response to ' + trigger + '.')
-		}).catch(e => msg.say('noooo! ' + e));
+		}).catch(e => msg.say('Something went wrong! ' + e));
 		//this.client.models.cr.create(msg.guild.id, trigger, response).then(result => msg.say('Sure, I\'ll say ' + response + ' in response to ' + trigger + '.')).catch(e => msg.say('noooo' + e));
 	}
 };

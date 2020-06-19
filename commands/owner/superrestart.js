@@ -17,13 +17,12 @@ module.exports = class SuperRestartCommand extends commando.Command {
 	}
 
 	async run(msg) {
-		setTimeout(() => {
+		return msg.say('Restarting...').then(() => {
 			process.send({
 				type: 'managerrestart',
 				channel: msg.channel.id,
 			});
-		}, 500);
-		return msg.say('Restarting...');
+		});
 	}
 };
 

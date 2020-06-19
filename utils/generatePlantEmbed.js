@@ -1,4 +1,4 @@
-const { RichEmbed, Attachment } = require('discord.js');
+const { MessageEmbed, Attachment } = require('discord.js');
 const GatewayCommand = require('./gateway/GatewayCommand');
 const Canvas = require('canvas');
 
@@ -6,7 +6,7 @@ module.exports = (plant, client, fields = []) => {
 	return new Promise(async (resolve, reject) => {
 		const type = await plant.getPlantType();
 		console.log(plant.color)
-		let embed = new RichEmbed()
+		let embed = new MessageEmbed()
 			.setTitle(plant.name)
 			.setColor('#' + (plant.color || type.defaultColor))
 			.setDescription(plant.lastEvent || 'You found this seed!')
@@ -27,12 +27,12 @@ module.exports = (plant, client, fields = []) => {
 				targets: [],
 			});
 			client.gateway.sendCommand(message).then(responses => {
-				console.log('gat woop')
-				let guilds = [];
+				let guild;
 				responses.forEach(response => {
-					guilds.push(...response.payload.guilds);
-				});
-				let serverName = guilds[0] ? guilds[0].name : plant.server;
+					if (response.payload.guild) guild = response.payload.guild;
+					//guilds.push(...response.payload.guilds);
+				}); //todo: break loop when found
+				let serverName = guild ? guild.name : plant.server;
 
 				let typeInfo = client.models.plant.types[plant.type];
 				let stage = Math.floor(plant.progress / 100 * typeInfo.maxStage);
@@ -44,9 +44,7 @@ module.exports = (plant, client, fields = []) => {
 				const ctx = canvas.getContext('2d');
 
 				ctx.imageSmoothingEnabled = false;
-
-				console.log('aaaaa')
-
+				
 				const img = Canvas.loadImage('./img/' + plantImageFileName).then(async img => {
 					ctx.drawImage(img, 0, 0, 90, 90);
 
@@ -75,7 +73,11 @@ module.exports = (plant, client, fields = []) => {
 						ctx.putImageData(imageData, 0, 0);
 					}
 
-					embed.attachFiles([new Attachment(canvas.toBuffer(), 'plant-image.png')])
+					embed
+						.attachFiles([{
+							attachment: canvas.toBuffer(), 
+							name: 'plant-image.png',
+						}])
 						.setThumbnail('attachment://plant-image.png');
 
 					embed
@@ -97,7 +99,7 @@ module.exports = (plant, client, fields = []) => {
 					)
 					if (fields.includes('owner')) embed.addField(
 						'Owner',
-						(await client.fetchUser((await plant.getUser()).id)).tag,
+						(await client.users.fetch((await plant.getUser()).id)).tag,
 						true,
 					)
 					resolve(embed);

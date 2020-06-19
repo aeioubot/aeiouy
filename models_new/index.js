@@ -10,15 +10,13 @@ const sequelize = new Sequelize(config.db.name, config.db.username, config.db.pa
 });
 const db = {};
 
-//const forbidden = ['db.js', 'plant.js', 'plantType.j']
 fs
     .readdirSync(__dirname)
     .filter(file => {
-        //console.log(file);
         return (file.indexOf('.') !== 0) && (file !== basename) && (file !== 'db.js') && (file.slice(-3) === '.js');
     })
     .forEach(file => {
-        var model = sequelize.import(path.join(__dirname, file));
+        const model = sequelize.import(path.join(__dirname, file));
         db[model.name] = model;
     });
 
@@ -30,9 +28,15 @@ Object.keys(db).sort((a, b) => (db[a].order || 0) - (db[b].order || 0)).forEach(
 //*
 db.user.findOrCreate({
     where: {
-    id: '94155927032176640',
-    email: 'zaop',
-}})//*/
+        id: '94155927032176640',
+    }
+})//*/
+
+module.exports = {
+    sequelize,
+    ...db
+}
+
 /*
 db.user.findAll().then(users => {
     //console.log(users);
@@ -49,37 +53,33 @@ db.user.findAll().then(users => {
                     association: db.plant.owner
                 }]
             });//*//*
-        });
-    })
+});
+})
 })
 
 db.plant.findAll({
-    includes: [{
-        association: db.plant.type,
-        model: db.plantType,
-        as: 'plantType',
-        through: { attributes: [] }
-    }, {
-        model: db.plantType,
-        required: true,
-        as: 'plantType',
-        foreignKey: 'type',
-    }]
+includes: [{
+association: db.plant.type,
+model: db.plantType,
+as: 'plantType',
+through: { attributes: [] }
+}, {
+model: db.plantType,
+required: true,
+as: 'plantType',
+foreignKey: 'type',
+}]
 }).then(plants => {
-    plants.forEach(plant => {
-        console.log(plant.type)
-    })
+plants.forEach(plant => {
+console.log(plant.type)
+})
 })
 /*
 db.reaction.findAll({
-    where: {
-        'trigger': 'boop'
-    }
+where: {
+'trigger': 'boop'
+}
 }).then(crs => {
-    console.log('oop', crs)
+console.log('oop', crs)
 })
 */
-module.exports = {
-    sequelize,
-    ...db
-}

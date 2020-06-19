@@ -12,7 +12,7 @@ const shardingManager = new Discord.ShardingManager('./aeiouy.js', {
 
 const restarts = {};
 
-shardingManager.on('launch', (shard) => {
+shardingManager.on('shardCreate', (shard) => {
 	console.log(`Created shard {cyan}#${shard.id}{r}!`);
 	shard.on('ready', () => {
 		console.log(`Shard {cyan}#${shard.id}{r} is ready!`);
@@ -20,15 +20,10 @@ shardingManager.on('launch', (shard) => {
 	shard.on('death', (p) => {
 		if (p.exitCode === 55) {
 			console.warn(`Shard {cyan}#${shard.id}{r} is restarting...`);
-			const onLaunch = (s2) => {
-				const onReady = () => {
-					s2.send(restarts[shard.id]);
-					s2.off('ready', onReady);
-				};
-				s2.on('ready', onReady);
-				shardingManager.off('launch', onLaunch);
-			};
-			shardingManager.on('launch', onLaunch);
+			shard.once('ready', (process) => {
+				console.log('ready again! sending')
+				shard.send(restarts[shard.id])
+			})
 		} else {
 			console.warn(`Shard {cyan}#${shard.id}{r} died! Restarting...`);
 		}
@@ -36,7 +31,8 @@ shardingManager.on('launch', (shard) => {
 	shard.on('message', (m) => {
 		//console.log('SHARD:MESSAGE', m);
 		if (m.type && m.type === 'shardrestart') {
-			restarts[shard.id] = {name: m.type, payload: {channel: m.channel}};
+			console.log(m)
+			restarts[shard.id] = {name: 'sendMessage', payload: {channel: m.channel, message: 'I\'m back!'}};
 		}
 		if (m.gateway) {
 			handleGatewayMessage(m);
@@ -47,19 +43,22 @@ shardingManager.on('launch', (shard) => {
 });
 
 process.on('message', (m) => {
-	//console.log('PROCESS:MESSAGE', m);
 	if (m.gateway) handleGatewayMessage(m);
 });
 
 function handleGatewayMessage(m) {
+	// After a shard manager restart, not all shards may be created yet
+	if (shardingManager.shards.size < config.discord.shards) {
+		shardingManager.once('shardCreate', () => {
+			handleGatewayMessage(m);
+		});
+		return;
+	}
+	// console.log(`Sending gateway msg of type ${m.name} to max ${shardingManager.shards.size} shards`)
 	shardingManager.shards.forEach((found) => {
 		if (m.targets.includes(found.id) || m.targets === 'all' || (typeof m.targets === 'object' && m.targets.length === 0)) {
 			if (!found.ready) {
-				const sendTheCommandThatIsPending = () => {
-					found.send(m);
-					found.off('ready', sendTheCommandThatIsPending);
-				};
-				found.on('ready', sendTheCommandThatIsPending);
+				found.once('ready', () => found.send(m));
 			} else {
 				found.send(m);
 			}
@@ -67,6 +66,22 @@ function handleGatewayMessage(m) {
 	});
 }
 
-shardingManager.spawn(shardingManager.totalShards, 500).catch((e) => {
+shardingManager.spawn(shardingManager.totalShards, 0).catch((e) => {
 	console.log(e);
 });
+
+async function killAll() {
+    try {
+        shardingManager.shards.forEach(shard => {
+            shard.kill();
+        });
+    }
+    catch(e) {
+        console.error(e);
+    }
+
+    process.exit(1);
+}
+
+process.on('SIGINT', killAll);
+process.on('SIGABRT', killAll);

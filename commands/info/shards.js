@@ -20,6 +20,7 @@ module.exports = class ShardsCommand extends commando.Command {
 			targets: [],
 		})).then((data) => {
 			data = data.sort((a, b) => a.source - b.source);
+			console.log(data);
 			const s = '     ';
 			let response = '```md\n# Shard' + s + 'Guilds' + s + 'Channels' + s + 'Members';
 			const totals = {
@@ -31,7 +32,7 @@ module.exports = class ShardsCommand extends commando.Command {
 				totals.guilds += data[i].payload.guilds;
 				totals.channels += data[i].payload.channels;
 				totals.members += data[i].payload.members;
-				let toAdd = (data[i].source === this.client.shard.id ? '\n# ' : '\n  ');
+				let toAdd = (data[i].source === this.client.shard.ids[0] ? '\n# ' : '\n  ');
 				toAdd += data[i].source.toString().padStart(5, ' ') + s + data[i].payload.guilds.toString().padStart(6, ' ') + s + data[i].payload.channels.toString().padStart(8, ' ') + s + data[i].payload.members.toString().padStart(7, ' ');
 				response += toAdd;
 			}
