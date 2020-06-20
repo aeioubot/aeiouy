@@ -25,7 +25,7 @@ module.exports = class CrList extends commando.Command {
 					key: 'order',
 					prompt: 'Ascending or descending?',
 					type: 'string',
-					parse: (val, msg, str) => {
+					parse: (val) => {
 						if (val.indexOf('desc') == 0) return -1;
 						return 1;
 					},

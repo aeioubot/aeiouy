@@ -1,5 +1,4 @@
 const commando = require('discord.js-commando');
-const config = require('../../config.json');
 
 module.exports = class InviteCommand extends commando.Command {
 	constructor(client) {
@@ -12,6 +11,6 @@ module.exports = class InviteCommand extends commando.Command {
 	}
 
 	async run(msg) {
-        return msg.say('Click this link to add aeiou to your server! ' + config.discord.invite);
+		return msg.say('Click this link to add aeiou to your server! ' + this.client.botInvite);
 	}
 };

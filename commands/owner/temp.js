@@ -1,5 +1,4 @@
 const commando = require('discord.js-commando');
-const GatewayCommand = require('../../utils/gateway/GatewayCommand');
 
 module.exports = class TempCommand extends commando.Command {
 	constructor(client) {
@@ -22,7 +21,7 @@ module.exports = class TempCommand extends commando.Command {
 	}
 
 	async run(msg, { id }) {
-		if (id < 0) return msg.say('smol id')
+		if (id < 0) return msg.say('smol id');
 		this.client.mods.user.findOne({ where: { id: msg.author.id } }).then(user => {
 			user.getPlants().then(plants => {
 				if (id >= plants.length) return msg.say('big id');
@@ -43,8 +42,8 @@ module.exports = class TempCommand extends commando.Command {
 					hoursPassed -= 1;
 				}
 				plant.progress = Math.min(100, plant.progress);
-				plant.save()
-			})
-		})
+				plant.save();
+			});
+		});
 	}
 };

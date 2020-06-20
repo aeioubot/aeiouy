@@ -25,8 +25,8 @@ module.exports = class InfoCommand extends commando.Command {
 				this.client.utils.generatePlantEmbed(plant, this.client, ['owner']).then(embed => {
 					msg.say(toSay, embed);
 				});
-			})
-		})
+			});
+		});
 		return null;//msg.say(`Found seed: #${red}${green}${blue}, growth ${growthRate}`);
 	}
 };

@@ -1,5 +1,4 @@
 const commando = require('discord.js-commando');
-const Discord = require('discord.js');
 
 module.exports = class GardenCommand extends commando.Command {
 	constructor(client) {

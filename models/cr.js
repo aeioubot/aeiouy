@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 
-const Op = Sequelize.Op;
 const db = require('../database.js').db;
 
 const table = db.define('customreaction', {
@@ -22,7 +21,7 @@ const table = db.define('customreaction', {
 });
 
 module.exports = {
-	create: (guild, trigger, response) => table.upsert({guild, trigger, response, type: "whole"}, {
+	create: (guild, trigger, response) => table.upsert({guild, trigger, response, type: 'whole'}, {
 		where: {
 			guild,
 			trigger,

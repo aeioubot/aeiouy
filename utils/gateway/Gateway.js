@@ -13,7 +13,7 @@ class Gateway {
 
 	sendCommand(command) {
 		if (!(command instanceof GatewayCommand)) throw new Error('Command must be a GatewayCommand.');
-		console.log(command)
+		console.log(command);
 		return new Promise((resolve, reject) => {
 			this.pending[command.time] = {
 				responses: [],
@@ -26,7 +26,7 @@ class Gateway {
 	}
 
 	async runCommand(command) {
-		console.log('received command', command)
+		console.log('received command', command);
 		if (command.name === 'response') {
 			if (!this.pending[command.time]) return;
 			this.pending[command.time].responses.push(command);

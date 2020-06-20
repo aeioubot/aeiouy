@@ -19,7 +19,7 @@ module.exports = class PouchCommand extends commando.Command {
 				}
 				plants = plants.map((seed, index) => `${index}. ${seed.name}`);
 				return msg.say('Seeds:\n' + plants.join('\n'));
-			})
-		})
+			});
+		});
 	}
 };

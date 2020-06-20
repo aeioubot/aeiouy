@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
-const config = require('./config.json');
+const fs = require('fs');
+const config = require('js-yaml').load(fs.readFileSync('./config.yaml'));
 
 class Database {
 	constructor() {

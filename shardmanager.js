@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
-const config = require('./config.json');
 const fs = require('fs');
+const config = require('js-yaml').load(fs.readFileSync('./config.yaml'));
 
 require('./console.js')('manager');
 
@@ -21,9 +21,9 @@ shardingManager.on('shardCreate', (shard) => {
 		if (p.exitCode === 55) {
 			console.warn(`Shard {cyan}#${shard.id}{r} is restarting...`);
 			shard.once('ready', (process) => {
-				console.log('ready again! sending')
-				shard.send(restarts[shard.id])
-			})
+				console.log('ready again! sending');
+				shard.send(restarts[shard.id]);
+			});
 		} else {
 			console.warn(`Shard {cyan}#${shard.id}{r} died! Restarting...`);
 		}
@@ -31,7 +31,7 @@ shardingManager.on('shardCreate', (shard) => {
 	shard.on('message', (m) => {
 		//console.log('SHARD:MESSAGE', m);
 		if (m.type && m.type === 'shardrestart') {
-			console.log(m)
+			console.log(m);
 			restarts[shard.id] = {name: 'sendMessage', payload: {channel: m.channel, message: 'I\'m back!'}};
 		}
 		if (m.gateway) {
@@ -71,16 +71,16 @@ shardingManager.spawn(shardingManager.totalShards, 0).catch((e) => {
 });
 
 async function killAll() {
-    try {
-        shardingManager.shards.forEach(shard => {
-            shard.kill();
-        });
-    }
-    catch(e) {
-        console.error(e);
-    }
+	try {
+		shardingManager.shards.forEach(shard => {
+			shard.kill();
+		});
+	}
+	catch(e) {
+		console.error(e);
+	}
 
-    process.exit(1);
+	process.exit(1);
 }
 
 process.on('SIGINT', killAll);

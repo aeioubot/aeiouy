@@ -1,11 +1,11 @@
-const { MessageEmbed, Attachment } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const GatewayCommand = require('./gateway/GatewayCommand');
 const Canvas = require('canvas');
 
 module.exports = (plant, client, fields = []) => {
-	return new Promise(async (resolve, reject) => {
+	return new Promise(async (resolve) => {
 		const type = await plant.getPlantType();
-		console.log(plant.color)
+		console.log(plant.color);
 		let embed = new MessageEmbed()
 			.setTitle(plant.name)
 			.setColor('#' + (plant.color || type.defaultColor))
@@ -14,9 +14,9 @@ module.exports = (plant, client, fields = []) => {
 				'Type',
 				type.name,
 				true,
-			)
+			);
 		if (plant.planted) {
-			console.log('planted')
+			console.log('planted');
 			let garden = await plant.getGarden();
 			const message = new GatewayCommand({
 				client: client,
@@ -45,7 +45,7 @@ module.exports = (plant, client, fields = []) => {
 
 				ctx.imageSmoothingEnabled = false;
 				
-				const img = Canvas.loadImage('./img/' + plantImageFileName).then(async img => {
+				Canvas.loadImage('./img/' + plantImageFileName).then(async img => {
 					ctx.drawImage(img, 0, 0, 90, 90);
 
 					if (typeInfo.colorEnabled) {
@@ -53,9 +53,9 @@ module.exports = (plant, client, fields = []) => {
 						// Replace white with the custom colour. Could move this to the config if white is desired as a plant colour
 						let oldColor = [255, 255, 255];
 						let oldColorComp = [0, 0, 0];
-						let newColor = plant.color.match(/[a-f\d]{2}/g).map(x => parseInt(x, 16))
+						let newColor = plant.color.match(/[a-f\d]{2}/g).map(x => parseInt(x, 16));
 						//console.log(newColor)
-						let newColorComp = newColor.map(x => x ^ 255)
+						let newColorComp = newColor.map(x => x ^ 255);
 
 						var imageData = ctx.getImageData(0, 0, 90, 90);
 						//console.log(imageData);
@@ -91,17 +91,17 @@ module.exports = (plant, client, fields = []) => {
 							plant.progress + '%',
 							true,
 						)
-						.setFooter('ID: ' + plant.id)
+						.setFooter('ID: ' + plant.id);
 					if (fields.includes('server')) embed.addField(
 						'Server',
 						serverName,
 						true,
-					)
+					);
 					if (fields.includes('owner')) embed.addField(
 						'Owner',
 						(await client.users.fetch((await plant.getUser()).id)).tag,
 						true,
-					)
+					);
 					resolve(embed);
 				});
 
@@ -112,8 +112,8 @@ module.exports = (plant, client, fields = []) => {
 		else {
 			resolve(embed);
 		}
-	})
-}
+	});
+};
 
 function compareArray(a, b) {
 	if (a.length !== b.length) throw new Error('Wrong length, yo');

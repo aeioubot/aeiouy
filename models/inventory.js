@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 
-const Op = Sequelize.Op;
 const db = require('../database.js').db;
 
 const table = db.define('inventory', {

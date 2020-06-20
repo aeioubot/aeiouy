@@ -1,18 +1,15 @@
-const { Model } = require('sequelize');
-
-
 const Sequelize = require('sequelize');
 
 const Op = Sequelize.Op;
 const db = require('../database.js').db;
 
 const table = db.define('item', {
-    id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-    },
+	id: {
+		allowNull: false,
+		autoIncrement: true,
+		primaryKey: true,
+		type: Sequelize.INTEGER
+	},
     
 	name: {
 		type: Sequelize.STRING,

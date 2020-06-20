@@ -1,4 +1,4 @@
-module.exports = async (client, payload) => {
+module.exports = async (client) => {
 	return {
 		guilds: client.guilds.cache.size,
 		channels: client.channels.cache.size,

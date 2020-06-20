@@ -1,5 +1,4 @@
 const commando = require('discord.js-commando');
-const fs = require('fs');
 
 module.exports = class SuperRestartCommand extends commando.Command {
 	constructor(client) {

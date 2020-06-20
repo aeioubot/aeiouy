@@ -11,7 +11,7 @@ module.exports = class DigCommand extends commando.Command {
 	}
 
 	async run(msg) { // ffc000
-		const plantTypes = await this.client.mods.plantType.findAll()
+		const plantTypes = await this.client.mods.plantType.findAll();
 		//const type = ['flower', 'wheat'][Math.floor(Math.random()*2)];
 		const type = plantTypes[Math.floor(Math.random()*plantTypes.length)];
 		let colour;
@@ -57,7 +57,7 @@ module.exports = class DigCommand extends commando.Command {
 					msg.say('Found seed:', embed);
 				});
 			});
-		})
+		});
 		
 		return null;//msg.say(`Found seed: #${red}${green}${blue}, growth ${growthRate}`);
 	}

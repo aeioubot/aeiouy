@@ -13,7 +13,7 @@ module.exports = class UnknownCommandCommand extends commando.Command {
 		});
 	}
 
-	run(msg) {
+	run() {
 		return null;
 	}
 };

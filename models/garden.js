@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 
-const Op = Sequelize.Op;
 const db = require('../database.js').db;
 
 const gardenTable = db.define('2garden', {
@@ -11,14 +10,14 @@ const gardenTable = db.define('2garden', {
 	maxPlants: {
 		type: Sequelize.INTEGER,
 	}
-})
+});
 
 gardenTable.sync();
 
 module.exports = {
-	findGarden: (server) => table.find({
+	findGarden: (server) => gardenTable.find({
 		where: {
 			server: server,
 		}
 	}),
-}
+};
