@@ -1,0 +1,20 @@
+---
+db:
+  name: database name
+  username: database username
+  password: database password
+  host: database host
+  dialect: database dialect
+discord:
+  token: discord bot token
+  shards: 2
+  owners:
+  - discord user ID 1
+  - discord user ID 2
+  support: https://discord.gg/supportserver
+  invite_permissions:
+  - MANAGE_MESSAGES
+  - MANAGE_WEBHOOKS
+  # These are always included:
+  # https://finitereality.github.io/permissions-calculator/?v=104193601
+  prefix: "!"

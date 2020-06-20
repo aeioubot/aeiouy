@@ -1,10 +1,12 @@
 const Commando = require('discord.js-commando');
+const { Permissions } = require('discord.js');
 const path = require('path');
 const fs = require('fs');
-const config = require('./config.json');
 const Database = require('./database.js');
 const Gateway = require('./utils/gateway/Gateway.js');
 const ReactionListener = require('./crlistener.js');
+
+const config = require('js-yaml').load(fs.readFileSync('./config.yaml'));
 
 Database.start();
 
@@ -15,21 +17,23 @@ const token = config.discord.token;
 const Aeiouy = new Commando.CommandoClient({
 	owner: config.discord.owners,
 	commandPrefix: config.discord.prefix,
-	invite: config.discord.invite,
+	invite: config.discord.support,
 	unknownCommandResponse: false,
 });
+
+Aeiouy.config = config;
 
 Aeiouy.mods = mods;
 
 Aeiouy.models = require('require-all')({
-	dirname     :  __dirname + '/models',
-	recursive   : true
-})
+	dirname: __dirname + '/models',
+	recursive: true
+});
 
 Aeiouy.utils = require('require-all')({
-	dirname     :  __dirname + '/utils',
-	excludeDirs :  /^(gateway)$/,
-	recursive   : true
+	dirname: __dirname + '/utils',
+	excludeDirs: /^(gateway)$/,
+	recursive: true
 });
 
 let reactionListener = new ReactionListener(mods.reaction);
@@ -45,8 +49,8 @@ Aeiouy.registry
 		['util', 'u t i l i t y'],
 	])
 	.registerDefaultTypes()
-    .registerDefaultGroups()
-    .registerDefaultCommands({
+	.registerDefaultGroups()
+	.registerDefaultCommands({
 		unknownCommand: false,
 	})
 	.registerCommandsIn(path.join(__dirname, 'commands'));
@@ -59,7 +63,11 @@ Aeiouy.on('ready', () => {
 });
 
 Aeiouy.once('ready', () => {
-	Aeiouy.on('message', (msg) => {reactionListener.check(msg)});
+	Aeiouy.on('message', (msg) => { reactionListener.check(msg); });
+	const permissions = new Permissions(Permissions.DEFAULT);
+	permissions.remove('MENTION_EVERYONE');
+	permissions.add(config.discord.invite_permissions);
+	Aeiouy.botInvite = `<https://discord.com/oauth2/authorize?client_id=${Aeiouy.user.id}&permissions=${permissions.bitfield}&scope=bot>`;
 });
 
 process.on('message', (m) => {
