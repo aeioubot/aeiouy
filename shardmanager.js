@@ -29,7 +29,6 @@ shardingManager.on('shardCreate', (shard) => {
 		}
 	});
 	shard.on('message', (m) => {
-		//console.log('SHARD:MESSAGE', m);
 		if (m.type && m.type === 'shardrestart') {
 			console.log(m);
 			restarts[shard.id] = {name: 'sendMessage', payload: {channel: m.channel, message: 'I\'m back!'}};

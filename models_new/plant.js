@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = async (sequelize, DataTypes) => {
 	const Plant = sequelize.define('plant', {
 		id: {
 			type: DataTypes.INTEGER,
@@ -21,12 +21,12 @@ module.exports = (sequelize, DataTypes) => {
 		lastEvent: DataTypes.STRING,
 	});
 
-	Plant.sync();
+	await Plant.sync();
 
-	Plant.associate = (models) => {
-		Plant.belongsTo(models.garden, { foreignKey: 'guild', targetKey: 'id' });
-		Plant.belongsTo(models.user, { foreignKey: 'owner', targetKey: 'id' });
-		Plant.belongsTo(models.plantType, { foreignKey: 'type', targetKey: 'type' });
+	Plant.associate = async (models) => {
+		await Plant.belongsTo(models.garden, { foreignKey: 'guild', targetKey: 'id' });
+		await Plant.belongsTo(models.user, { foreignKey: 'owner', targetKey: 'id' });
+		await Plant.belongsTo(models.plantType, { foreignKey: 'type', targetKey: 'type' });
 	};
 
 	Plant.order = 1;

@@ -3,56 +3,55 @@ const Sequelize = require('sequelize');
 const config = require('js-yaml').load(fs.readFileSync(__dirname + '/../config.yaml'));
 const path = require('path');
 const basename = path.basename(__filename);
+
 const sequelize = new Sequelize(config.db.name, config.db.username, config.db.password, {
 	host: config.db.host,
 	dialect: config.db.dialect,
-	logging: false,
+	logging: (m) => { console.log(m) },
+	define: {
+		freezeTableName: true,
+	}
 });
-const db = {};
 
-fs
-	.readdirSync(__dirname)
-	.filter(file => {
-		return (file.indexOf('.') !== 0) && (file !== basename) && (file !== 'db.js') && (file.slice(-3) === '.js');
-	})
-	.forEach(file => {
-		const model = sequelize.import(path.join(__dirname, file));
-		db[model.name] = model;
+async function main() {
+	return new Promise(async (resolve, reject) => {
+		const db = {
+			sequelize,
+		};
+		const files = fs.readdirSync(__dirname)
+			.filter(file => {
+				return (file !== basename) && (file.slice(-3) === '.js');
+			});
+		for (const file of files) {
+			const model = await (require(path.join(__dirname, file)))(sequelize, Sequelize.DataTypes);
+			db[model.name] = model;
+		}
+		for (const modelName in db) {
+			await db[modelName].associate?.(db);
+		}
+		sequelize.sync({ force: true });
+		resolve(db);
 	});
+}
 
-Object.keys(db).sort((a, b) => (db[a].order || 0) - (db[b].order || 0)).forEach(modelName => {
-	if (db[modelName].associate) {
-		db[modelName].associate(db);
-	}
-});
-//*
-db.user.findOrCreate({
-	where: {
-		id: '94155927032176640',
-	}
-});//*/
-
-module.exports = {
-	sequelize,
-	...db
-};
+module.exports = main;
 
 /*
 db.user.findAll().then(users => {
-    //console.log(users);
-    db.plantType.findAll().then(types => {
-        if (types.length == 0) return;
-        users.forEach(user => {
-            /*user.createPlant({
-                leaves: Math.floor(Math.random() * 100),
-                type: 'flower',
-            }, {
-                includes: [{
-                    association: db.plant.type
-                }, {
-                    association: db.plant.owner
-                }]
-            });//*//*
+	//console.log(users);
+	db.plantType.findAll().then(types => {
+		if (types.length == 0) return;
+		users.forEach(user => {
+			/*user.createPlant({
+				leaves: Math.floor(Math.random() * 100),
+				type: 'flower',
+			}, {
+				includes: [{
+					association: db.plant.type
+				}, {
+					association: db.plant.owner
+				}]
+			});//*//*
 });
 })
 })

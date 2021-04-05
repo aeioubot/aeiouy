@@ -13,13 +13,13 @@ module.exports = function(name) {
 	};
 	const oldLog = console.log;
 	console.log = (...args) => {
-		console.write('{cyan}info  |', ...args);
+		console.write(   '{cyan}info  |', ...args);
 	};
 	console.error = (...args) => {
-		console.write('{red}err   |', ...args);
+		console.write(    '{red}err   |', ...args);
 	};
 	console.warn = (...args) => {
-		console.write('{yellow}warn  |', ...args);
+		console.write( '{yellow}warn  |', ...args);
 	};
 	console.fatal = (...args) => {
 		console.write('{magenta}fatal |', ...args);

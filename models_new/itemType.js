@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = async (sequelize, DataTypes) => {
 	const ItemType = sequelize.define('itemType', {
 		type: {
 			type: DataTypes.STRING,
@@ -9,10 +9,10 @@ module.exports = (sequelize, DataTypes) => {
 		description: DataTypes.STRING,
 	});
 
-	ItemType.sync();
+	await ItemType.sync();
 
-	ItemType.associate = (models) => {
-		ItemType.hasMany(models.item, { foreignKey: 'itemtype', targetKey: 'type' });
+	ItemType.associate = async (models) => {
+		await ItemType.hasMany(models.item, { foreignKey: 'itemtype', targetKey: 'type' });
 	};
 
 	return ItemType;

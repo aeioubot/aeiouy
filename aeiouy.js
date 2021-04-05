@@ -10,8 +10,6 @@ const config = require('js-yaml').load(fs.readFileSync('./config.yaml'));
 
 Database.start();
 
-const mods = require('./models_new');
-
 const token = config.discord.token;
 
 const Aeiouy = new Commando.CommandoClient({
@@ -23,20 +21,22 @@ const Aeiouy = new Commando.CommandoClient({
 
 Aeiouy.config = config;
 
-Aeiouy.mods = mods;
+(require('./models_new')()).then(models => {
+	Aeiouy.mods = models;
+	let reactionListener = new ReactionListener(models.reaction);
+	Aeiouy.on('message', (msg) => { reactionListener.check(msg); });
+})
 
-Aeiouy.models = require('require-all')({
-	dirname: __dirname + '/models',
-	recursive: true
-});
+// Aeiouy.models = require('require-all')({
+// 	dirname: __dirname + '/models',
+// 	recursive: true
+// });
 
 Aeiouy.utils = require('require-all')({
 	dirname: __dirname + '/utils',
 	excludeDirs: /^(gateway)$/,
 	recursive: true
 });
-
-let reactionListener = new ReactionListener(mods.reaction);
 
 Aeiouy.registry
 	.registerGroups([
@@ -63,7 +63,6 @@ Aeiouy.on('ready', () => {
 });
 
 Aeiouy.once('ready', () => {
-	Aeiouy.on('message', (msg) => { reactionListener.check(msg); });
 	const permissions = new Permissions(Permissions.DEFAULT);
 	permissions.remove('MENTION_EVERYONE');
 	permissions.add(config.discord.invite_permissions);

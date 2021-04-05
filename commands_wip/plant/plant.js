@@ -31,8 +31,8 @@ module.exports = class PlantCommand extends commando.Command {
 					msg.say('Planted!', embed);
 				});
 			});
-		});/*
-		this.client.models.plant.find({user: msg.author.id}).then((result) => {
+		});
+		/*this.client.models.plant.find({user: msg.author.id}).then((result) => {
 			if (result.filter(x => x.dataValues.planted == true).length >= 5) {
 				return msg.say('You already have 5 plants! Check them out with !status');
 			}

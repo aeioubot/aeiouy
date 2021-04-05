@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = async (sequelize, DataTypes) => {
 	const Item = sequelize.define('item', {
 		id: {
 			type: DataTypes.INTEGER,
@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
 		count: DataTypes.INTEGER,
 	});
 
-	Item.sync();
+	await Item.sync();
 
-	Item.associate = (models) => {
-		Item.belongsTo(models.user, { foreignKey: 'owner', targetKey: 'id' });
-		Item.belongsTo(models.itemType, { foreignKey: 'itemtype', targetKey: 'type' });
+	Item.associate = async (models) => {
+		await Item.belongsTo(models.user, { foreignKey: 'owner', targetKey: 'id' });
+		await Item.belongsTo(models.itemType, { foreignKey: 'itemtype', targetKey: 'type' });
 	};
 
 	Item.order = 2;

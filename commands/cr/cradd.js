@@ -25,7 +25,7 @@ module.exports = class CrAddCommand extends commando.Command {
 
 
 	async run(msg, { trigger, response }) {
-		this.client.mods.reaction.create({
+		this.client.mods.reaction.create( {
 			guild: msg.guild.id,
 			type: 'whole',
 			trigger,

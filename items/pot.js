@@ -5,6 +5,7 @@ module.exports = {
 	plural: 'pots',
 	emoji: '👾',
 	use: (client, message) => {
+		// TODO: new models
 		client.models.user;
 	},
 };

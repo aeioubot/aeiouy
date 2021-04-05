@@ -21,10 +21,10 @@ module.exports = class TempCommand extends commando.Command {
 	}
 
 	async run(msg, { id }) {
-		if (id < 0) return msg.say('smol id');
+		if (id < 0) return msg.say('2 small id');
 		this.client.mods.user.findOne({ where: { id: msg.author.id } }).then(user => {
 			user.getPlants().then(plants => {
-				if (id >= plants.length) return msg.say('big id');
+				if (id >= plants.length) return msg.say('2 big id');
 				let plant = plants[id];
 				plant.progressedAt.setMinutes(0);
 				plant.progressedAt.setMinutes(0);

@@ -12,12 +12,12 @@ module.exports = class MsgCommand extends commando.Command {
 			args: [
 				{
 					key: 'channel',
-					prompt: 'channel id pls',
+					prompt: 'Channel ID?',
 					type: 'string',
 				},
 				{
 					key: 'message',
-					prompt: 'what u say',
+					prompt: 'What\'s the message?',
 					type: 'string',
 				}],
 		});
@@ -39,6 +39,6 @@ module.exports = class MsgCommand extends commando.Command {
 		});
 		console.log(message);
 		this.client.gateway.sendCommand(message);
-		return msg.say('brbrbrbrbr...');
+		return msg.say('sending...');
 	}
 };

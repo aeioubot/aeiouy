@@ -22,6 +22,7 @@ module.exports = class LeavesCommand extends commando.Command {
 
 	async run(msg, { user }) {
 		if (!user) user = msg.author;
+		// TODO: new models
 		this.client.models.user.find(user.id).then((result) => {
 			if (!result) {
 				return user.id === msg.author.id ?

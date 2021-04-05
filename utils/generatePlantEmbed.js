@@ -33,7 +33,7 @@ module.exports = (plant, client, fields = []) => {
 					//guilds.push(...response.payload.guilds);
 				}); //todo: break loop when found
 				let serverName = guild ? guild.name : plant.server;
-
+				// TODO: plant.type should be the type itself. foreign key etc etc
 				let typeInfo = client.models.plant.types[plant.type];
 				let stage = Math.floor(plant.progress / 100 * typeInfo.maxStage);
 				let plantImageFileName = plant.type + '_' + stage + '.png';

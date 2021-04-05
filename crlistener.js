@@ -7,6 +7,8 @@ class ReactionListener {
 	}
 
 	check(msg) {
+		console.log('chekin')
+		console.log(this.model);
 		if (!this.model) return;
 		if (msg.author.bot === true || msg.channel.type == 'dm') return;
 		this.model.findAll({

@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = async (sequelize, DataTypes) => {
 	const Reaction = sequelize.define('reaction', {
 		id: {
 			type: DataTypes.INTEGER,
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 		response: DataTypes.STRING(2000),
 	});
 
-	Reaction.sync();
+	await Reaction.sync();
 
 	return Reaction;
 };

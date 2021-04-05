@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = async (sequelize, DataTypes) => {
 	const PlantType = sequelize.define('plantType', {
 		type: {
 			type: DataTypes.STRING,
@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
 		maxStage: DataTypes.INTEGER,
 	});
 
-	PlantType.sync();
+	await PlantType.sync();
 
-	PlantType.associate = (models) => {
-		PlantType.hasMany(models.plant, { foreignKey: 'type', targetKey: 'type' });
+	PlantType.associate = async (models) => {
+		await PlantType.hasMany(models.plant, { foreignKey: 'type', targetKey: 'type' });
 	};
 
 	return PlantType;
