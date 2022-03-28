@@ -1,0 +1,22 @@
+{
+  "name": "aeiou",
+  "version": "5.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "@discordjs/builders": "^0.12.0",
+    "@discordjs/rest": "^0.3.0",
+    "discord-api-types": "^0.30.0",
+    "discord.js": "^13.6.0",
+    "sequelize": "^6.17.0",
+    "sqlite3": "github:mapbox/node-sqlite3#593c9d"
+  },
+  "devDependencies": {
+    "eslint": "^8.12.0"
+  }
+}
