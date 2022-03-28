@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
     data: new SlashCommandBuilder()
 	.setName('cradd')
-	.setDescription('Replies with your input!')
+	.setDescription('Add a new custom reaction')
 	.addStringOption(option =>
 		option.setName('trigger')
 			.setDescription('Thing the user says')
