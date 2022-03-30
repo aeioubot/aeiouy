@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
 		guild: DataTypes.STRING(25),
 		type: DataTypes.STRING(20),
 		trigger: DataTypes.STRING(2000),
+        trigger_regex: DataTypes.STRING(2000),
 		response: DataTypes.STRING(2000),
+        is_template: DataTypes.INTEGER,
 	});
 	return Reaction;
 };
