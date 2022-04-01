@@ -27,11 +27,10 @@ module.exports = {
             interaction.respond('No custom reactions found');
             return;
         }
-        if (page < 1) {
-            await interaction.reply('don\'t be silly please pick a number between 1 and ' + pages);
-            return;
-        }
-        if (page > pages) page = pages;
+        
+        // Auto correct invalid page numbers
+        page = Math.max(1, page)
+        page = Math.min(pages, page)
 
         const reactionsToDisplay = reactions.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
