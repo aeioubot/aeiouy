@@ -18,6 +18,12 @@ module.exports = {
                 .setRequired(false)
                 .addChoice('Full message', 'full')
                 .addChoice('Part of message', 'partial')),
+    help: `Custom reactions have a **trigger** and a **response**. When a user says the trigger, aeiou will respond with the response.
+There are two matching methods available: **full message** and **part of message**. The former will match the entire message, while the latter will also match if the trigger is just _contained_ in the message.
+
+The system also supports **template** reactions, which are reactions that contain placeholders. These placeholders can be used to insert values from the message into the response.
+For example, with the trigger \`I'm {1}\` and the response \`Hi {1}, I'm aeiou\`, aeiou will respond with \`Hi hungry, I'm aeiou\` when a user says \`I'm hungry\`.
+You can also use multiple placeholders; just mark them each with a different number, like \`when the {1} is {2}\`.`,
     async execute(interaction) {
         console.log(interaction.client.database.models.reaction);
         // TODO validation ? max len

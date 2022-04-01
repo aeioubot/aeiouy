@@ -12,6 +12,8 @@ module.exports = {
         option.setName('response')
             .setDescription('Thing aeiou replies')
             .setRequired(false)),
+    help: `Use this command to delete a custom reaction. You have to specify the trigger of the reaction you want to delete.
+If there are multiple reactions with the same trigger, specify the one you want by also including the response.`,
     async execute(interaction) {
         console.log(interaction.client.database.models.reaction);
         // TODO validation ? max len

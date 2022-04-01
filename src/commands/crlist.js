@@ -11,6 +11,7 @@ module.exports = {
             option.setName('page')
                 .setDescription('Page number')
                 .setRequired(false)),
+    help: 'List custom reactions in the server. You can click the buttons to navigate between pages, or jump to a specific page with /crlist <page>.',
     async execute(interaction) {
         const reactionModel = interaction.client.database.models.reaction;
         const reactions = await reactionModel.findAll({
@@ -69,10 +70,10 @@ function generateMessageContent(page, pages) {
 
 function generateReactionList(reactions, page) {
     return reactions.map((x, i) => {
-        const number_text = ((i + (page - 1) * PAGE_SIZE + 1).toString() + '.').padEnd(4)
+        const number_text = ((i + (page - 1) * PAGE_SIZE + 1).toString() + '.').padEnd(5)
         const partial_text = x.type == 'partial' ? ' _(partial match)_' : '';
         const template_text = x.is_template ? ' _(template)_' : '';
-        return `\`${number_text}\` \`${x.trigger}\`${partial_text}${template_text}\n\`  ->\` \`${x.response}\``
+        return `\`${number_text}\` \`${x.trigger}\`${partial_text}${template_text}\n\`   ->\` \`${x.response}\``
     }).join('\n');
 }
 
