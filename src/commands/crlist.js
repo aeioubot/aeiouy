@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageActionRow, MessageButton } = require('discord.js');
+
+const { generateMessageObject } = require('../shared/list.js')
 
 const PAGE_SIZE = 4;
 
@@ -27,7 +28,7 @@ module.exports = {
             interaction.respond('No custom reactions found');
             return;
         }
-        
+
         // Auto correct invalid page numbers
         page = Math.max(1, page)
         page = Math.min(pages, page)
@@ -36,7 +37,7 @@ module.exports = {
 
         interaction.reply({
             fetchReply: true,
-            ...generateMessageObject(page, pages, reactionsToDisplay)
+            ...generateMessageObject(page, pages, reactionsToDisplay, PAGE_SIZE)
         }).then((message) => {
             const collector = message.createMessageComponentCollector({ componentType: 'BUTTON', time: 600000 });
 
@@ -45,7 +46,7 @@ module.exports = {
                 page += page_delta;
                 const reactionsToDisplay = reactions.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
                 i.update({
-                    ...generateMessageObject(page, pages, reactionsToDisplay)
+                    ...generateMessageObject(page, pages, reactionsToDisplay, PAGE_SIZE)
                 });
             });
 
@@ -55,39 +56,3 @@ module.exports = {
         });
     },
 };
-
-function generateMessageObject(page, pages, reactions) {
-    return {
-        content: generateMessageContent(page, pages) + '\n' + generateReactionList(reactions, page),
-        components: [createActionRow(page, pages)],
-    }
-}
-
-function generateMessageContent(page, pages) {
-    return `you are on page ${page} of ${pages}`
-}
-
-function generateReactionList(reactions, page) {
-    return reactions.map((x, i) => {
-        const number_text = ((i + (page - 1) * PAGE_SIZE + 1).toString() + '.').padEnd(5)
-        const partial_text = x.type == 'partial' ? ' _(partial match)_' : '';
-        const template_text = x.is_template ? ' _(template)_' : '';
-        return `\`${number_text}\` \`${x.trigger}\`${partial_text}${template_text}\n\`   ->\` \`${x.response}\``
-    }).join('\n');
-}
-
-function createActionRow(page, max_page) {
-    return new MessageActionRow()
-        .addComponents(
-            new MessageButton()
-                .setCustomId('prev')
-                .setLabel('previous page')
-                .setStyle('PRIMARY')
-                .setDisabled(page == 1),
-            new MessageButton()
-                .setCustomId('next')
-                .setLabel('next page')
-                .setStyle('PRIMARY')
-                .setDisabled(page == max_page),
-        );
-}
