@@ -16,21 +16,23 @@ const rest = new REST({ version: '9' }).setToken(token);
 
 (async () => {
     try {
-        console.log('Started refreshing application (/) commands.');
-        
-        if (process.argv.includes('-g') || process.argv.includes('--global')) {
+        let clear = process.argv.includes('--clear');
+        if (process.argv.includes('--global')) {
+            console.log('Refreshing global commands' + (clear ? ' (clearing)' : ''));
             await rest.put(
                 Routes.applicationCommands(clientId, guildId),
-                { body: commands },
+                { body: clear ? [] : commands },
             );
         }
-
-        await rest.put(
-            Routes.applicationGuildCommands(clientId, guildId),
-            { body: commands },
-        );
+        else if (process.argv.includes('--guild')) {
+            console.log('Refreshing guild commands' + (clear ? ' (clearing)' : ''));
+            await rest.put(
+                Routes.applicationGuildCommands(clientId, guildId),
+                { body: clear ? [] : commands },
+            );
+        }
         
-        console.log('Successfully reloaded application (/) commands.');
+        console.log('Done');
     } catch (error) {
         console.error(error);
     }
