@@ -18,7 +18,8 @@ module.exports = {
     async execute(interaction) {
         const command = interaction.options.getString('command');
         if (!command) {
-            await interaction.reply(`Hi! I'm aeiou, and I can respond to messages with custom reactions. Try \`/help cradd\` to get started!`);
+            await interaction.reply(`Hi! I'm aeiou, and I can respond to messages with custom reactions. Try \`/help cradd\` to get started!
+If you need help, you can also join the support server: https://discord.gg/vPAzdzW`);
             return;
         }
         const command_file = `${__dirname}/${command}.js`;
