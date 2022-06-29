@@ -44,5 +44,8 @@ client.on('interactionCreate', async interaction => {
 const responder = require('./events/responder');
 client.on('messageCreate', responder);
 
+const legacyCommandResponder = require('./events/legacy-command-responder');
+client.on('messageCreate', legacyCommandResponder);
+
 // Login to Discord with your client's token
 client.login(token);
