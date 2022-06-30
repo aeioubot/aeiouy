@@ -23,12 +23,19 @@ client.database = db;
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
 	console.log('Ready!');
-	require('./database.js');
+	updateStatus();
 });
+
+client.on('guildCreate', updateStatus);
+client.on('guildDelete', updateStatus);
+
+function updateStatus() {
+	client.user.setPresence({ activities: [{ name: `${client.guilds.cache.size} servers`, type: 3 }] });
+}
 
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
-	
+
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) return;
