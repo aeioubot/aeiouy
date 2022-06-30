@@ -19,7 +19,9 @@ function generateReactionList(reactions, page, page_size) {
         const number_text = ((i + (page - 1) * page_size + 1).toString() + '.').padEnd(5)
         const partial_text = x.type == 'partial' ? ' _(partial match)_' : '';
         const template_text = x.is_template ? ' _(template)_' : '';
-        return `\`${number_text}\` \`${x.trigger.slice(0, 500)}\`${partial_text}${template_text}\n\`   ->\` \`${x.response.slice(0, 500)}\``
+        const trigger_text = x.trigger.length > 100 ? x.trigger.slice(0, 100) + '...' : x.trigger;
+        const response_text = x.response.length > 100 ? x.response.slice(0, 100) + '...' : x.response;
+        return `\`${number_text}\` \`${trigger_text}\`${partial_text}${template_text}\n\`   ->\` \`${response_text}\``
     }).join('\n');
 }
 
