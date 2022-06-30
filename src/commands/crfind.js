@@ -3,7 +3,7 @@ const { Op } = require('sequelize');
 
 const { generateMessageObject } = require('../shared/list.js')
 
-const PAGE_SIZE = 4;
+const PAGE_SIZE = 10;
 
 module.exports = {
     data: new SlashCommandBuilder()
