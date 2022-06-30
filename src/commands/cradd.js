@@ -25,7 +25,12 @@ The system also supports **template** reactions, which are reactions that contai
 For example, with the trigger \`I'm {1}\` and the response \`Hi {1}, I'm aeiou\`, aeiou will respond with \`Hi hungry, I'm aeiou\` when a user says \`I'm hungry\`.
 You can also use multiple placeholders; just mark them each with a different number, like \`when the {1} is {2}\`.`,
     async execute(interaction) {
-        console.log(interaction.client.database.models.reaction);
+        
+        if (!interaction.member.permissions.has('MANAGE_MESSAGES')) {
+            interaction.respond('You do not have permission to add custom reactions (you need the "Manage Messages" permission)');
+            return;
+        }
+
         // TODO validation ? max len
 
         let trigger = interaction.options.getString('trigger');

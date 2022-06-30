@@ -15,7 +15,12 @@ module.exports = {
     help: `Use this command to delete a custom reaction. You have to specify the trigger of the reaction you want to delete.
 If there are multiple reactions with the same trigger, specify the one you want by also including the response.`,
     async execute(interaction) {
-        console.log(interaction.client.database.models.reaction);
+        
+        if (!interaction.member.permissions.has('MANAGE_MESSAGES')) {
+            interaction.respond('You do not have permission to add custom reactions (you need the "Manage Messages" permission)');
+            return;
+        }
+        
         // TODO validation ? max len
         const reactionModel = interaction.client.database.models.reaction;
         const criteria = {};
