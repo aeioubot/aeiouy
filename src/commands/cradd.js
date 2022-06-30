@@ -27,7 +27,7 @@ You can also use multiple placeholders; just mark them each with a different num
     async execute(interaction) {
         
         if (!interaction.member.permissions.has('MANAGE_MESSAGES')) {
-            interaction.respond('You do not have permission to add custom reactions (you need the "Manage Messages" permission)');
+            interaction.reply('You do not have permission to add custom reactions (you need the "Manage Messages" permission)');
             return;
         }
 

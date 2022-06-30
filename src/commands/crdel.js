@@ -17,7 +17,7 @@ If there are multiple reactions with the same trigger, specify the one you want 
     async execute(interaction) {
         
         if (!interaction.member.permissions.has('MANAGE_MESSAGES')) {
-            interaction.respond('You do not have permission to add custom reactions (you need the "Manage Messages" permission)');
+            interaction.reply('You do not have permission to add custom reactions (you need the "Manage Messages" permission)');
             return;
         }
         
