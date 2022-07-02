@@ -37,7 +37,13 @@ module.exports = async (message) => {
             const regex = new RegExp(template_reaction.trigger_regex, 'i');
             const match = message.content.match(regex);
             if (match) {
-                let response = template_reaction.response;
+                // Find all responses that use the same trigger
+                const matching_reactions = template_reactions.filter(reaction => reaction.trigger === template_reaction.trigger);
+
+                // Pick a random one
+                const reaction = matching_reactions[Math.floor(Math.random() * matching_reactions.length)];
+
+                let response = reaction.response;
                 for (let i = 0; i < match.length; i++) {
                     response = response.replaceAll(`{${i + 1}}`, match[i + 1]);
                 }
