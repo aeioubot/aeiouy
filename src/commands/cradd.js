@@ -17,7 +17,11 @@ module.exports = {
                 .setDescription('Matching method')
                 .setRequired(false)
                 .addChoice('Full message', 'full')
-                .addChoice('Part of message', 'partial')),
+                .addChoice('Part of message', 'partial'))
+        .addIntegerOption(option =>
+            option.setName('weight')
+                .setDescription('Relative chance of response, if this trigger is used more than once')
+                .setRequired(false)),
     help: `Custom reactions have a **trigger** and a **response**. When a user says the trigger, aeiou will respond with the response.
 There are two matching methods available: **full message** and **part of message**. The former will match the entire message, while the latter will also match if the trigger is just _contained_ in the message.
 
@@ -25,9 +29,14 @@ The system also supports **template** reactions, which are reactions that contai
 For example, with the trigger \`I'm {1}\` and the response \`Hi {1}, I'm aeiou\`, aeiou will respond with \`Hi hungry, I'm aeiou\` when a user says \`I'm hungry\`.
 You can also use multiple placeholders; just mark them each with a different number, like \`when the {1} is {2}\`.`,
     async execute(interaction) {
-        
+
         if (!interaction.member.permissions.has('MANAGE_MESSAGES')) {
             interaction.reply('You do not have permission to add custom reactions (you need the "Manage Messages" permission)');
+            return;
+        }
+
+        if (interaction.options.getInteger('weight') != null && interaction.options.getInteger('weight') < 1) {
+            interaction.reply({ content: 'The weight must be at least 1', ephemeral: true });
             return;
         }
 
@@ -41,6 +50,7 @@ You can also use multiple placeholders; just mark them each with a different num
             trigger: trigger,
             response: interaction.options.getString('response'),
             type: interaction.options.getString('type') || 'full',
+            weight: interaction.options.getInteger('weight') || 1,
             is_template: trigger_is_template,
             guild: interaction.guild.id,
         }

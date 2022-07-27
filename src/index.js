@@ -54,5 +54,9 @@ client.on('messageCreate', responder);
 const legacyCommandResponder = require('./events/legacy-command-responder');
 client.on('messageCreate', legacyCommandResponder);
 
+client.on('rateLimit', (rateLimitInfo) => {
+	console.log(rateLimitInfo);
+})
+
 // Login to Discord with your client's token
 client.login(token);

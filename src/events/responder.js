@@ -2,6 +2,7 @@ const { Sequelize } = require('sequelize');
 
 module.exports = async (message) => {
     if (message.author.bot) return;
+    if (message.guild.me.isCommunicationDisabled()) return;
     if (!message.channel.permissionsFor(message.client.user).has('SEND_MESSAGES')) return;
 
     const reactionModel = message.client.database.models.reaction;
@@ -18,7 +19,7 @@ module.exports = async (message) => {
     if (reactions.length > 0) {
 
         // pick random reaction
-        const reaction = reactions[Math.floor(Math.random() * reactions.length)];
+        const reaction = pick_random_reaction(reactions);
 
         message.channel.send(reaction.response);
     }
@@ -41,7 +42,7 @@ module.exports = async (message) => {
                 const matching_reactions = template_reactions.filter(reaction => reaction.trigger === template_reaction.trigger);
 
                 // Pick a random one
-                const reaction = matching_reactions[Math.floor(Math.random() * matching_reactions.length)];
+                const reaction = pick_random_reaction(matching_reactions);
 
                 let response = reaction.response;
                 for (let i = 0; i < match.length; i++) {
@@ -53,6 +54,19 @@ module.exports = async (message) => {
                 message.channel.send(response);
                 return;
             }
+        }
+    }
+}
+
+function pick_random_reaction(reactions) {
+    const total_weight = reactions.reduce((sum, reaction) => sum + reaction.weight, 0);
+    const random_weight = Math.floor(Math.random() * total_weight);
+    let current_weight = 0;
+    for (const reaction of reactions) {
+        current_weight += reaction.weight;
+        console.log('current_weight', current_weight);
+        if (current_weight > random_weight) {
+            return reaction;
         }
     }
 }

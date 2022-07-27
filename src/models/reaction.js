@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         trigger_regex: DataTypes.STRING(2000),
 		response: DataTypes.STRING(2000),
         is_template: DataTypes.INTEGER,
+		weight: DataTypes.INTEGER,
 	});
 	return Reaction;
 };

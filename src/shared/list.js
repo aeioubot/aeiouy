@@ -17,11 +17,12 @@ function generateMessageContent(page, pages) {
 function generateReactionList(reactions, page, page_size) {
     return reactions.map((x, i) => {
         const number_text = ((i + (page - 1) * page_size + 1).toString() + '.').padEnd(5)
-        const partial_text = x.type == 'partial' ? ' _(partial match)_' : '';
-        const template_text = x.is_template ? ' _(template)_' : '';
+        const partial_text = x.type == 'partial' ? ' _(🔎 partial match)_' : '';
+        const template_text = x.is_template ? ' _(📝 template)_' : '';
+        const weight_text = x.weight > 1 ? ` _(⚖️ weight: ${x.weight})_` : '';
         const trigger_text = x.trigger.length > 100 ? x.trigger.slice(0, 100) + '...' : x.trigger;
         const response_text = x.response.length > 100 ? x.response.slice(0, 100) + '...' : x.response;
-        return `\`${number_text}\` \`${trigger_text}\`${partial_text}${template_text}\n\`   ->\` \`${response_text}\``
+        return `\`${number_text}\` \`${trigger_text}\`${partial_text}${template_text}${weight_text}\n\`   ->\` \`${response_text}\``
     }).join('\n');
 }
 
