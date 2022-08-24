@@ -34,6 +34,8 @@ module.exports = async (message) => {
 
         // Test each regex, if one matches, take the response, replace {1} with the first match, etc, then send it
         for (const template_reaction of template_reactions) {
+            // Prevent catastrophic backtracking (todo: stop this at the source in /cradd)
+            if (template_reaction.trigger_regex.includes('(.+) (.+)') || template_reaction.trigger_regex.includes('(.+)(.+)')) continue;
             const regex = new RegExp(template_reaction.trigger_regex, 'i');
             const match = message.content.match(regex);
             if (match) {
