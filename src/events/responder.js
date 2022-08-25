@@ -8,7 +8,7 @@ module.exports = async (message) => {
 
     const reactions = await reactionModel.findAll({
         where: Sequelize.literal(
-            `((trigger = :content and type = 'full') or (:content like '%' || trigger || '%' and type = 'partial')) and guild = :guild and is_template = 0`),
+            `((trigger LIKE :content and type = 'full') or (:content like '%' || trigger || '%' and type = 'partial')) and guild = :guild and is_template = 0`),
         replacements: {
             content: message.content,
             guild: message.guild.id,
