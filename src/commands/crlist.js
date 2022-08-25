@@ -25,7 +25,7 @@ module.exports = {
         const pages = Math.ceil(reactions.length / PAGE_SIZE);
 
         if (pages == 0) {
-            interaction.respond('No custom reactions found');
+            interaction.reply('No custom reactions found');
             return;
         }
 
