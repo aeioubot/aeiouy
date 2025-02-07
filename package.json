@@ -14,7 +14,7 @@
     "discord-api-types": "^0.30.0",
     "discord.js": "^13.8.1",
     "sequelize": "^6.21.1",
-    "sqlite3": "^5.0.8"
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "eslint": "^8.18.0"
