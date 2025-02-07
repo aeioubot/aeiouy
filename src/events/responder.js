@@ -2,8 +2,9 @@ const { Sequelize } = require('sequelize');
 
 module.exports = async (message) => {
     if (message.author.bot) return;
+	try {
     if (!message.channel.permissionsFor(message.client.user).has('SEND_MESSAGES')) return;
-
+	} catch(e) {}
     const reactionModel = message.client.database.models.reaction;
 
     const reactions = await reactionModel.findAll({
