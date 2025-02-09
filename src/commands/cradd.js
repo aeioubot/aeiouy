@@ -27,7 +27,9 @@ There are two matching methods available: **full message** and **part of message
 
 The system also supports **template** reactions, which are reactions that contain placeholders. These placeholders can be used to insert values from the message into the response.
 For example, with the trigger \`I'm {1}\` and the response \`Hi {1}, I'm aeiou\`, aeiou will respond with \`Hi hungry, I'm aeiou\` when a user says \`I'm hungry\`.
-You can also use multiple placeholders; just mark them each with a different number, like \`when the {1} is {2}\`.`,
+You can also use multiple placeholders; just mark them each with a different number, like \`when the {1} is {2}\`.
+
+You can restrict a response to age-restricted (NSFW) channels by setting the \`nsfw\` option to \`True\`.`,
     async execute(interaction) {
         
         if (!interaction.member.permissions.has('MANAGE_MESSAGES')) {
