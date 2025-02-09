@@ -17,7 +17,11 @@ module.exports = {
                 .setDescription('Matching method')
                 .setRequired(false)
                 .addChoice('Full message', 'full')
-                .addChoice('Part of message', 'partial')),
+                .addChoice('Part of message', 'partial'))
+        .addBooleanOption(option =>
+            option.setName('nsfw')
+                .setDescription('Restrict to channels marked as NSFW / age-restricted')
+                .setRequired(false)),
     help: `Custom reactions have a **trigger** and a **response**. When a user says the trigger, aeiou will respond with the response.
 There are two matching methods available: **full message** and **part of message**. The former will match the entire message, while the latter will also match if the trigger is just _contained_ in the message.
 
@@ -42,6 +46,7 @@ You can also use multiple placeholders; just mark them each with a different num
             response: interaction.options.getString('response'),
             type: interaction.options.getString('type') || 'full',
             is_template: trigger_is_template,
+            is_nsfw: interaction.options.getBoolean('nsfw') || false,
             guild: interaction.guild.id,
         }
 

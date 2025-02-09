@@ -7,9 +7,16 @@ module.exports = async (message) => {
 	} catch(e) {}
     const reactionModel = message.client.database.models.reaction;
 
+    const sfw_channel = message.channel.nsfw === false;
+
+    let query = `((trigger LIKE :content and type = 'full') or (:content like '%' || trigger || '%' and type = 'partial')) and guild = :guild and is_template = 0`
+
+    if (sfw_channel) {
+        query += ` and is_nsfw = 0`
+    }
+
     const reactions = await reactionModel.findAll({
-        where: Sequelize.literal(
-            `((trigger LIKE :content and type = 'full') or (:content like '%' || trigger || '%' and type = 'partial')) and guild = :guild and is_template = 0`),
+        where: Sequelize.literal(query),
         replacements: {
             content: message.content,
             guild: message.guild.id,
@@ -24,11 +31,17 @@ module.exports = async (message) => {
         message.channel.send(reaction.response);
     }
     else {
+        let query = {
+            guild: message.guild.id,
+            is_template: 1,
+        }
+
+        if (sfw_channel) {
+            query.is_nsfw = 0;
+        }
+        
         const template_reactions = await reactionModel.findAll({
-            where: {
-                guild: message.guild.id,
-                is_template: 1,
-            }
+            where: query
         });
 
         if (template_reactions.length === 0) return;
