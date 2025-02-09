@@ -57,7 +57,7 @@ module.exports = {
 
         interaction.reply({
             fetchReply: true,
-            ...generateMessageObject(page, pages, reactionsToDisplay, PAGE_SIZE)
+            ...generateMessageObject(page, pages, reactionsToDisplay, PAGE_SIZE, true)
         }).then((message) => {
             const collector = message.createMessageComponentCollector({ componentType: 'BUTTON', time: 600000 });
 
@@ -66,7 +66,7 @@ module.exports = {
                 page += page_delta;
                 const reactionsToDisplay = reactions.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
                 i.update({
-                    ...generateMessageObject(page, pages, reactionsToDisplay, PAGE_SIZE)
+                    ...generateMessageObject(page, pages, reactionsToDisplay, PAGE_SIZE, true)
                 });
             });
 

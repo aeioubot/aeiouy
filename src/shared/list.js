@@ -1,22 +1,28 @@
 const { MessageActionRow, MessageButton } = require('discord.js');
 
-function generateMessageObject(page, pages, reactions, page_size) {
+function generateMessageObject(page, pages, reactions, page_size, use_ids = false, prefix='') {
 
     return {
-        content: generateMessageContent(page, pages) + '\n' + generateReactionList(reactions, page, page_size),
+        content: prefix + generateMessageContent(page, pages) + '\n' + generateReactionList(reactions, page, page_size, use_ids),
         components: pages > 1 ? [createActionRow(page, pages)] : [],
     }
 }
 
 function generateMessageContent(page, pages) {
-    if (pages == 1) return ''
+    if (pages == 1) return 'here are all the results'
     
     return `you are on page ${page} of ${pages}`
 }
 
-function generateReactionList(reactions, page, page_size) {
+function generateReactionList(reactions, page, page_size, use_ids = false) {
     return reactions.map((x, i) => {
-        const number_text = ((i + (page - 1) * page_size + 1).toString() + '.').padEnd(5)
+        let number_text;
+        if (use_ids) {
+            number_text = '[' + ('CR' + x.id.toString() + '').padEnd(7) + ']'
+        }
+        else {
+            number_text = ((i + (page - 1) * page_size + 1).toString() + '.').padEnd(5)
+        }
         const partial_text = x.type == 'partial' ? ' _(partial match)_' : '';
         const template_text = x.is_template ? ' _(template)_' : '';
         const nsfw_text = x.is_nsfw ? ' _(nsfw)_' : '';
@@ -42,4 +48,4 @@ function createActionRow(page, max_page) {
         );
 }
 
-module.exports = { generateMessageObject }
+module.exports = { generateMessageObject, generateReactionList }
