@@ -36,10 +36,10 @@ module.exports = {
         const reactionsToDisplay = reactions.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
         interaction.reply({
-            fetchReply: true,
+            withResponse: true,
             ...generateMessageObject(page, pages, reactionsToDisplay, PAGE_SIZE)
-        }).then((message) => {
-            const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 600000 });
+        }).then(({ resource }) => {
+            const collector = resource.message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 600000 });
 
             collector.on('collect', i => {
                 const page_delta = i.component.customId == 'prev' ? -1 : 1;

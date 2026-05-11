@@ -61,11 +61,11 @@ If there are multiple reactions with the same trigger, specify the one you want 
             const reactionsToDisplay = reactions.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
             interaction.reply({
-                fetchReply: true,
+                withResponse: true,
                 ...generateMessageObject(page, pages, reactionsToDisplay, PAGE_SIZE, true, explanation)
-            }).then((message) => {
-                const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 600000 });
-    
+            }).then(({ resource }) => {
+                const collector = resource.message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 600000 });
+
                 collector.on('collect', i => {
                     const page_delta = i.component.customId == 'prev' ? -1 : 1;
                     page += page_delta;
@@ -74,7 +74,7 @@ If there are multiple reactions with the same trigger, specify the one you want 
                         ...generateMessageObject(page, pages, reactionsToDisplay, PAGE_SIZE, true, explanation)
                     });
                 });
-    
+
                 collector.on('end', collected => {
                     console.log(`Collected ${collected.size} interactions.`);
                 });

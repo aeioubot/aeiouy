@@ -44,8 +44,8 @@ module.exports = {
 	async execute(interaction) {
 		const time = interaction.options.getBoolean('time');
 		if (time) {
-			await interaction.reply({ content: `determining ping...`, fetchReply: true}).then(message => {
-				interaction.editReply(`pong! this reply took ${message.createdTimestamp - interaction.createdTimestamp}ms, API latency is ${Math.round(interaction.client.ws.ping)}ms`);
+			await interaction.reply({ content: `determining ping...`, withResponse: true }).then(({ resource }) => {
+				interaction.editReply(`pong! this reply took ${resource.message.createdTimestamp - interaction.createdTimestamp}ms, API latency is ${Math.round(interaction.client.ws.ping)}ms`);
 			});
 		}
 		else {
