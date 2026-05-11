@@ -26,9 +26,10 @@ function generateReactionList(reactions, page, page_size, use_ids = false) {
         const partial_text = x.type == 'partial' ? ' _(partial match)_' : '';
         const template_text = x.is_template ? ' _(template)_' : '';
         const nsfw_text = x.is_nsfw ? ' _(nsfw)_' : '';
+        const emoji_text = x.is_emoji ? ' _(emoji react)_': '';
         const trigger_text = x.trigger.length > 100 ? x.trigger.slice(0, 100) + '...' : x.trigger;
         const response_text = x.response.length > 100 ? x.response.slice(0, 100) + '...' : x.response;
-        return `\`${number_text}\` \`${trigger_text}\`${partial_text}${template_text}${nsfw_text}\n\`   ->\` \`${response_text}\``
+        return `\`${number_text}\` \`${trigger_text}\`${partial_text}${template_text}${nsfw_text}${emoji_text}\n\`   ->\` \`${response_text}\``
     }).join('\n');
 }
 

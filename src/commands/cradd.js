@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const emojiRegex = require('emoji-regex-xs');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -18,6 +19,10 @@ module.exports = {
                 .setRequired(false)
                 .addChoice('Full message', 'full')
                 .addChoice('Part of message', 'partial'))
+        .addBooleanOption(option =>
+            option.setName('emoji')
+                .setDescription('React with an emoji instead of sending a text message')
+                .setRequired(false))
         .addBooleanOption(option =>
             option.setName('nsfw')
                 .setDescription('Restrict to channels marked as NSFW / age-restricted')
@@ -42,14 +47,33 @@ You can restrict a response to age-restricted (NSFW) channels by setting the \`n
         let trigger = interaction.options.getString('trigger');
 
         const trigger_is_template = (/\{\d+\}/).test(trigger);
+        let response = interaction.options.getString('response');
+
+        if (interaction.options.getBoolean('emoji')) {
+            const regex = emojiRegex();
+            const match = response.match(regex);
+            const custom_emoji_regex = /<a?:\w+:\d+>/g;
+            const custom_emoji_match = response.match(custom_emoji_regex);
+            const all_matches = (match ? match : []).concat(custom_emoji_match ? custom_emoji_match : []);
+            if (all_matches.length > 1) {
+                interaction.reply('You selected the emoji reaction option. The response must therefore be a single emoji, but I found multiple.');
+                return;
+            }
+            if (all_matches.length == 0) {
+                interaction.reply('You selected the emoji reaction option, so the response must be a single emoji. But I didn\'t detect any emojis in your response.');
+                return;
+            }
+            response = all_matches[0];
+        }
 
         const object_to_insert = {
             trigger: trigger,
-            response: interaction.options.getString('response'),
+            response: response,
             type: interaction.options.getString('type') || 'full',
             is_template: trigger_is_template,
             is_nsfw: interaction.options.getBoolean('nsfw') || false,
             guild: interaction.guild.id,
+            is_emoji: interaction.options.getBoolean('emoji') || false,
         }
 
         if (trigger_is_template) {

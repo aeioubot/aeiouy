@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 		response: DataTypes.STRING(2000),
         is_template: DataTypes.INTEGER,
 		is_nsfw: DataTypes.BOOLEAN,
+		is_emoji: DataTypes.BOOLEAN,
 	});
 	return Reaction;
 };

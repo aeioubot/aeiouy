@@ -28,7 +28,12 @@ module.exports = async (message) => {
         // pick random reaction
         const reaction = reactions[Math.floor(Math.random() * reactions.length)];
 
-        message.channel.send(reaction.response);
+        if (reaction.is_emoji) {
+            message.react(reaction.response);
+        }
+        else {
+            message.channel.send(reaction.response);
+        }
     }
     else {
         let query = {
@@ -58,6 +63,11 @@ module.exports = async (message) => {
 
                 // Pick a random one
                 const reaction = matching_reactions[Math.floor(Math.random() * matching_reactions.length)];
+
+                if (reaction.is_emoji) {
+                    message.react(reaction.response);
+                    return;
+                }
 
                 let response = reaction.response;
                 for (let i = 0; i < match.length; i++) {
