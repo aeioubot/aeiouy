@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageButton } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 function generateMessageObject(page, pages, reactions, page_size, use_ids = false, prefix='') {
 
@@ -34,17 +34,17 @@ function generateReactionList(reactions, page, page_size, use_ids = false) {
 }
 
 function createActionRow(page, max_page) {
-    return new MessageActionRow()
+    return new ActionRowBuilder()
         .addComponents(
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('prev')
                 .setLabel('previous page')
-                .setStyle('PRIMARY')
+                .setStyle(ButtonStyle.Primary)
                 .setDisabled(page == 1),
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('next')
                 .setLabel('next page')
-                .setStyle('PRIMARY')
+                .setStyle(ButtonStyle.Primary)
                 .setDisabled(page == max_page),
         );
 }

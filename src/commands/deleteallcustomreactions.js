@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,7 +11,7 @@ module.exports = {
     help: `delete ALL custom reactions! this can't be undone!!!`,
 
     async execute(interaction) {
-        if (!interaction.member.permissions.has('ADMINISTRATOR')) {
+        if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
             interaction.reply('Only administrators can do that!');
             return;
         }

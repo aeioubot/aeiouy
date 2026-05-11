@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, PermissionFlagsBits, ComponentType } = require('discord.js');
 const { generateMessageObject } = require('../shared/list.js')
 const PAGE_SIZE = 10;
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
 If there are multiple reactions with the same trigger, specify the one you want by also including the response, or refer to it by ID (which you can find via this command or \`/crfind\`)`,
     async execute(interaction) {
         
-        if (!interaction.member.permissions.has('MANAGE_MESSAGES')) {
+        if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
             interaction.reply('You do not have permission to add custom reactions (you need the "Manage Messages" permission)');
             return;
         }
@@ -64,7 +64,7 @@ If there are multiple reactions with the same trigger, specify the one you want 
                 fetchReply: true,
                 ...generateMessageObject(page, pages, reactionsToDisplay, PAGE_SIZE, true, explanation)
             }).then((message) => {
-                const collector = message.createMessageComponentCollector({ componentType: 'BUTTON', time: 600000 });
+                const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 600000 });
     
                 collector.on('collect', i => {
                     const page_delta = i.component.customId == 'prev' ? -1 : 1;

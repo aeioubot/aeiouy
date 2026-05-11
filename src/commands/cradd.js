@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const emojiRegex = require('emoji-regex-xs');
 
 module.exports = {
@@ -17,8 +17,10 @@ module.exports = {
             option.setName('type')
                 .setDescription('Matching method')
                 .setRequired(false)
-                .addChoice('Full message', 'full')
-                .addChoice('Part of message', 'partial'))
+                .addChoices(
+                    { name: 'Full message', value: 'full' },
+                    { name: 'Part of message', value: 'partial' },
+                ))
         .addBooleanOption(option =>
             option.setName('emoji')
                 .setDescription('React with an emoji instead of sending a text message')
@@ -37,7 +39,7 @@ You can also use multiple placeholders; just mark them each with a different num
 You can restrict a response to age-restricted (NSFW) channels by setting the \`nsfw\` option to \`True\`.`,
     async execute(interaction) {
         
-        if (!interaction.member.permissions.has('MANAGE_MESSAGES')) {
+        if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
             interaction.reply('You do not have permission to add custom reactions (you need the "Manage Messages" permission)');
             return;
         }

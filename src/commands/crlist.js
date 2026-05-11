@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, ComponentType } = require('discord.js');
 
 const { generateMessageObject } = require('../shared/list.js')
 
@@ -39,7 +39,7 @@ module.exports = {
             fetchReply: true,
             ...generateMessageObject(page, pages, reactionsToDisplay, PAGE_SIZE)
         }).then((message) => {
-            const collector = message.createMessageComponentCollector({ componentType: 'BUTTON', time: 600000 });
+            const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 600000 });
 
             collector.on('collect', i => {
                 const page_delta = i.component.customId == 'prev' ? -1 : 1;

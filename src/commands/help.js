@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 const commands = [];
 const commandFiles = fs.readdirSync(__dirname).filter(file => file.endsWith('.js'));
@@ -12,7 +12,7 @@ module.exports = {
         .addStringOption(option =>
             option.setName('command')
                 .setDescription('The command you want info about')
-                .setChoices(commandFiles.map(c => [c.slice(0, -3), c.slice(0, -3)]))
+                .setChoices(...commandFiles.map(c => ({ name: c.slice(0, -3), value: c.slice(0, -3) })))
                 .setRequired(false)),
     help: 'Use this command to view detailed usage information about a command.',
     async execute(interaction) {

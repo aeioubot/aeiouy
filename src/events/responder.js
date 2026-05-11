@@ -1,9 +1,10 @@
 const { Sequelize } = require('sequelize');
+const { PermissionFlagsBits } = require('discord.js');
 
 module.exports = async (message) => {
     if (message.author.bot) return;
 	try {
-    if (!message.channel.permissionsFor(message.client.user).has('SEND_MESSAGES')) return;
+    if (!message.channel.permissionsFor(message.client.user).has(PermissionFlagsBits.SendMessages)) return;
 	} catch(e) {}
     const reactionModel = message.client.database.models.reaction;
 
